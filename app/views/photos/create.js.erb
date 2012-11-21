@@ -1,0 +1,5 @@
+//add uploaded images into content div
+$("#articleContent").append("<span><%= @photo.id %></span><img src='<%= @photo.image %>' />");
+$('#new_photo').each (function(){
+  this.reset();
+});

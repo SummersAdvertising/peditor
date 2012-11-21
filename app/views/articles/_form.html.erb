@@ -16,8 +16,11 @@
     <%= f.text_field :name %>
   </div>
   <div class="field">
-    <%= f.label :content %><br />
-    <%= f.text_field :content %>
+    <%= f.label :content %><%= f.text_field :content %>
+
+    <!--show the content of article -->
+    <div id="articleContent"></div>
+  
   </div>
   <div class="actions">
     <%= f.submit %>
