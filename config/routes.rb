@@ -6,7 +6,8 @@ ParagraphEditor::Application.routes.draw do
   # first created -> highest priority.
 
   # Sample of regular route:
-  #   match 'products/:id' => 'catalog#view'
+    match 'articles/:id/uploadPhoto' => 'articles#createPhoto', :via => [:post] 
+    match 'articles/:artid/deletePhoto/:id' => 'articles#destroyPhoto', :via => [:delete]
   # Keep in mind you can assign values other than :controller and :action
 
   # Sample of named route:

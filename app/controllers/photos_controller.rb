@@ -1,12 +1,4 @@
 class PhotosController < ApplicationController
-	def index
-    @photos = Photo.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @articles }
-    end
-  end
 
   def new
     @photo = Photo.new
@@ -19,6 +11,7 @@ class PhotosController < ApplicationController
 
   def create
     @photo = Photo.new(params[:photo])
+    @photo.article_id = params[:id]
 
     respond_to do |format|
       if @photo.save
@@ -31,5 +24,5 @@ class PhotosController < ApplicationController
       end
     end
   end
-
+  
 end

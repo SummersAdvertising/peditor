@@ -1,5 +1,38 @@
 //add uploaded images into content div
-$("#articleContent").append("<span><%= @photo.id %></span><img src='<%= @photo.image %>' />");
+$("#articleContent").append("<div class='paragraphContainer' data-type='image' data-photo_id='<%= @photo.id %>'><img src='<%= @photo.image %>' alt='<%= @photo.id %>' /></div>");
+
 $('#new_photo').each (function(){
   this.reset();
 });
+
+contentPack();
+
+function contentPack(){
+    var article = "";
+    var obj = new Object();
+    obj.article = new Array();
+
+    $("#articleContent .paragraphContainer").children().each(function(){
+    	if($(this).is("p")){
+    		var p = new Object();
+    		p.type = "paragraph";
+    		p.content=$(this).html();
+    		obj.article.push(p);
+    	}
+    	else if ($(this).is("img")){
+    		var img = new Object();
+    		img.type = "image";
+    		img.path = $(this).attr("src");
+    		obj.article.push(img);
+    	}
+    	else if ($(this).is("iframe")) {
+    		var video = new Object();
+    		video.type = "video";
+    		video.code = $(this).data("code");
+    		obj.article.push(video);
+    	}
+    });
+
+    article = JSON.stringify(obj);
+    $("#article_content").val(article);
+}

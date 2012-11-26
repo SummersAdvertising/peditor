@@ -16,13 +16,258 @@
     <%= f.text_field :name %>
   </div>
   <div class="field">
-    <%= f.label :content %><%= f.text_field :content %>
+    <%= f.label :content %><%= f.text_field :content, :style => "display:none;" %>
 
     <!--show the content of article -->
-    <div id="articleContent"></div>
+    <div id="articleContent" class="sortable"></div>
   
   </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit "save article" %>
   </div>
 <% end %>
+
+<hr />
+<p>add a <span class="showDiv">paragraph</span> | <span class="showDiv">image</span> | <span class="showDiv">video</span></p> 
+
+<div id="addParagraph">
+  <h5>add paragraph</h5>
+  <textarea id="newParagraphContent" placeholder="請將段落輸入在此處"></textarea><br />
+  <button id="newParagraph">建立文字段落</button>
+</div>
+
+<div id="addImage" style="display:none;"> 
+  <%= form_for (@photo), :url => 'uploadPhoto', :html => {:multipart => true, :remote => true} do |p| %>
+  <h5>add image</h5>
+  <%= p.file_field :image %>
+  <div class="actions">
+    <%= p.submit %>
+  </div>
+  <% end %>
+</div>
+
+<div id="addVideo" style="display:none;">
+  <h5>add video</h5>
+  <input id="newVideoContent" style="width: 320px;" placeholder="請將整段youtube連結貼到此處" />
+  <button id="newVideo">建立影片段落</button>
+  <div id="videoPreview"></div>
+</div>
+
+<hr />
+
+<script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
+<style>
+.ui-state-highlight { height: 50px; }
+.paragraphContainer { border-width: 1px; border-style: solid; margin: 5px;}
+</style>
+<script type="text/javascript">
+  //show content
+  showContent();
+
+  /*insert a paragraph/photo/video into article content */
+  $(".showDiv").click(function(){
+    var itemToAdd = "add" + $(this).html().charAt(0).toUpperCase() + $(this).html().slice(1);
+
+    var divToShow = ["addParagraph","addImage","addVideo"];
+    for(item in divToShow)
+    {
+      var display = divToShow[item]==itemToAdd ? "block":"none";
+      $("#"+divToShow[item]).css("display", display);
+    }
+  });
+
+  $("#newParagraph").click(function(){
+    if($("#newParagraphContent").val()){
+      var container = $('<div class="paragraphContainer ui-state-default" data-type="paragraph"></div>');
+      var paragraph = $("<p  class='paragraph'>" + $("#newParagraphContent").val().replace(/\n/g, "<br />") + "</p>");
+      container.append(paragraph);
+
+      $("#articleContent").append(container);
+      $(container).bind("click",function(){paragraphClick(this);});
+      $("#newParagraphContent").val('');
+
+      saveArticle("#edit_article_<%= params[:id]%>");
+    }
+    else{
+      alert("請輸入內容");
+    }
+  });
+
+  function newImage(photoID,photoPath){
+    $("#articleContent").append('<div class="paragraphContainer ui-state-default" data-type="image" data-photo_id="'+ photoID +'"><img src="'+photoPath+'" alt="'+photoID+'" /></div>');
+    $(".paragraphContainer").unbind().bind("click",function(){paragraphClick(this);});
+    $('#new_photo').each (function(){
+      this.reset();
+    });
+
+    saveArticle("#edit_article_<%= params[:id]%>");    
+  }
+
+  $("#newVideo").click(function() {    
+    if( $("#newVideoContent").val() ){    
+      var container = $('<div class="paragraphContainer ui-state-default" data-type="video"></div>');
+      var code = getYoutubeCode( $("#newVideoContent").val());
+      var paragraph = $('<iframe width="480" height="290" data-code="' + code + '" src="http://www.youtube.com/embed/' + code + '" frameborder="0" allowfullscreen></iframe>');
+      container.append(paragraph);
+
+      $("#articleContent").append(container);
+      $(container).bind("click",function(){paragraphClick(this);});
+      $("#newVideoContent").val('');
+      $("#videoPreview").html('');
+
+      saveArticle("#edit_article_<%= params[:id]%>");
+    }
+    else{
+      alert("請輸入內容");
+    }
+  });
+
+  // Video preview
+  $('#newVideoContent').change(function() {
+    var code = getYoutubeCode( $(this).val() );
+    $('#videoPreview').append('<iframe width="320" height="220" data-code="' + code + '" src="http://www.youtube.com/embed/' + code + '" frameborder="0" allowfullscreen></iframe>');
+  });
+
+  function getYoutubeCode( link ) {
+    if ( link != undefined ) {
+      return /[a-zA-Z0-9\?\.\:\/]+v=([a-zA-Z0-9_\-]+)&?.*/.exec(link)[1]; 
+    }
+    return '';
+  }
+
+  /*paragraphs sortable */
+  $( ".sortable" ).sortable({
+    placeholder: "ui-state-highlight",
+    stop: function( event, ui ) {saveArticle("#edit_article_<%= params[:id]%>");}
+  });
+  $( ".sortable" ).disableSelection();
+
+  /* save and update the article */
+  function contentPack(){
+    var article = "";
+    var obj = new Object();
+    obj.article = new Array();
+
+    $("#articleContent .paragraphContainer").children().each(function(){
+      if($(this).is("p")){
+        var p = new Object();
+        p.type = "paragraph";
+        p.content=$(this).html();
+        obj.article.push(p);
+      }
+      else if ($(this).is("img")){
+        var img = new Object();
+        img.type = "image";
+        img.path = $(this).attr("src");
+        img.id = $(this).attr("alt");
+        obj.article.push(img);
+      }
+      else if ($(this).is("iframe")) {
+        var video = new Object();
+        video.type = "video";
+        video.code = $(this).data("code");
+        obj.article.push(video);
+      }
+    });
+
+    article = JSON.stringify(obj);
+    $("#article_content").val(article);
+  }
+
+  function saveArticle(formArticle){
+    contentPack();
+
+    $(formArticle).ajaxSubmit({
+      beforeSubmit: function(a,f,o) {
+      o.dataType = 'json';
+    },
+    complete: function(XMLHttpRequest, textStatus) {
+    },});
+  }
+
+  function showContent(){
+    if($("#article_content").val())
+    {
+      var obj = jQuery.parseJSON($("#article_content").val());
+      var article = "";
+      for(i=0;i<obj.article.length;i++)
+      {
+        var paragraph = obj.article[i];
+
+        if(JSON.stringify(paragraph.type)=='"paragraph"')
+        {
+          article = "<div class='paragraphContainer ui-state-default' data-type='paragraph'><p>"+jsonReplace(JSON.stringify(paragraph.content)).replace(/\\n/g, "<br />")+"</p>";
+        }
+        else if(JSON.stringify(paragraph.type)=='"image"')
+        {
+          article = "<div  class='paragraphContainer ui-state-default' data-type='image' data-photo_id=\"" + paragraph.id + "\"><img alt=" + JSON.stringify(paragraph.id) + " src=" + JSON.stringify(paragraph.path) + " title=" + JSON.stringify(paragraph.id) + " /></div>";
+        }
+        else if (JSON.stringify(paragraph.type)=='"video"') {
+          article = "<div  class='paragraphContainer ui-state-default' data-type='video' data-code=\"" + paragraph.code + "\"><iframe width=\"480\" height=\"290\" data-code=\"" + paragraph.code + "\" src=\"http://www.youtube.com/embed/" + paragraph.code+ "\" frameborder=\"0\" allowfullscreen></iframe></div>";
+        }
+
+        $("#articleContent").append(article);
+
+        $(".paragraphContainer").unbind().bind("click",function(){
+          $("#editDiv").remove();
+          paragraphClick(this);
+        });
+
+      }
+    }
+  }
+
+  function jsonReplace(string){return string.replace(/"([^"]*)"/g, "$1");}
+ 
+ /* adjust order of the paragraphs */
+  function paragraphClick(paragraph){
+    $("#elementControl").remove();
+
+    var controlDiv;
+
+    if($(paragraph).data("type") == "paragraph") {
+      controlDiv = '<div id="elementControl"><span id="elementDel">刪除</span> | <span id="elementUp">往上</span> | <span id="elementDown">往下</span> | <span id="elementEdit">編輯</span> | </div>';
+    }
+    else if( $(paragraph).data("type") == "image" ) {
+      controlDiv = '<div id="elementControl"><a class="photoDelete" href="/articles/<%= params[:id]%>/deletePhoto/' + $(paragraph).children()[0].title + '" data-method="delete" rel="nofollow" data-remote="true">刪除</a> | <span id="elementUp">往上</span> | <span id="elementDown">往下</span></div>';
+    }
+    else if( $(paragraph).data("type") == "video" ) {
+      controlDiv = '<div id="elementControl"><span id="elementDel">刪除</span> | <span id="elementUp">往上</span> | <span id="elementDown">往下</span></div>';
+    }
+
+    $(paragraph).unbind().prepend(controlDiv).bind("click",function(){paragraphClick(this);});
+    bindControls();
+  }
+
+  function bindControls(){
+    $("#elementUp").click(function(){
+      $(this).parents('.paragraphContainer').prev().before($(this).parent().parent());
+      saveArticle("#edit_article_<%= params[:id]%>");
+    });
+
+    $("#elementDown").click(function(){
+      $(this).parent().parent().next().after($(this).parent().parent());
+      saveArticle("#edit_article_<%= params[:id]%>");
+    });
+
+    $("#elementDel").click(function(){
+      $(this).parent().parent().remove();
+      saveArticle("#edit_article_<%= params[:id]%>");
+    });
+
+    $("#elementEdit").click(function(){
+      $("#editDiv").remove();
+      var paragraph = $(this).parent().next();
+      $(this).parent().parent().append("<div id='editDiv'><textarea id='editedContent'></textarea><input type='button' id='editFinish' value='完成修改'/></div>");
+
+      $("#editedContent").html($(paragraph).html());
+      $("#editFinish").click(function(){
+        if($("#editedContent").html()){
+          $(this).parent().prev().html($("#editedContent").val());
+          $("#editDiv").remove();
+          saveArticle("#edit_article_<%= params[:id]%>");
+        }
+      });      
+    });
+  }
+</script>

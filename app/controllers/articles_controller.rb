@@ -36,6 +36,7 @@ class ArticlesController < ApplicationController
   # GET /articles/1/edit
   def edit
     @article = Article.find(params[:id])
+    @photo = Photo.new
   end
 
   # POST /articles
@@ -45,7 +46,7 @@ class ArticlesController < ApplicationController
     
     respond_to do |format|
       if @article.save
-        format.html { redirect_to @article, notice: 'Article was successfully created.' }
+        format.html { redirect_to edit_article_path(@article), :notice => 'Article was successfully created.' }
         format.json { render json: @article, status: :created, location: @article }
       else
         format.html { render action: "new" }
@@ -53,6 +54,36 @@ class ArticlesController < ApplicationController
       end
     end
   end
+
+  #create photo
+  def createPhoto
+    @photo = Photo.new(params[:photo])
+    @photo.article_id = params[:id]
+
+    respond_to do |format|
+      if @photo.save
+        format.html { redirect_to photos.path } #index.html.erb
+        format.json { render json: @photo, status: :created, location: @photo }
+        format.js
+      else
+        format.html { render action: "new" }
+        format.json { render json: @photo.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def destroyPhoto
+    @photo = Photo.find(params[:id])
+    #File.delete("/public" + @photo.image) #carrierwave will handle this.
+    @photo.destroy
+
+    respond_to do |format|
+          format.html { redirect_to :controller => 'photos', :action => 'index' }
+          format.js
+          format.json { head :no_content }
+      end
+  end
+
 
   # PUT /articles/1
   # PUT /articles/1.json
@@ -75,6 +106,10 @@ class ArticlesController < ApplicationController
   def destroy
     @article = Article.find(params[:id])
     @article.destroy
+
+    #delete the photo directory
+    require 'FileUtils'
+    FileUtils.rm_rf 'public/uploads/' + params[:id]
 
     respond_to do |format|
       format.html { redirect_to articles_url }
