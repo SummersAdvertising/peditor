@@ -1,4 +1,3 @@
-
 <%= form_for(@article) do |f| %>
   <% if @article.errors.any? %>
     <div id="error_explanation">
@@ -131,12 +130,12 @@
 
   function getYoutubeCode( link ) {
     if ( link != undefined ) {
-      return /[a-zA-Z0-9\?\.\:\/]+v=([a-zA-Z0-9_\-]+)&?.*/.exec(link)[1]; 
+      return /[a-zA-Z0-9\?\.\:\/]+v=([a-zA-Z0-9_\-]+)&?.*/.exec(link)[1];
     }
     return '';
   }
 
-  /*paragraphs sortable */
+  /* paragraphs sortable */
   $( ".sortable" ).sortable({
     placeholder: "ui-state-highlight",
     stop: function( event, ui ) {saveArticle("#edit_article_<%= params[:id]%>");}
@@ -201,7 +200,7 @@
         }
         else if(JSON.stringify(paragraph.type)=='"image"')
         {
-          article = "<div  class='paragraphContainer ui-state-default' data-type='image' data-photo_id=\"" + paragraph.id + "\"><img alt=" + JSON.stringify(paragraph.id) + " src=" + JSON.stringify(paragraph.path) + " title=" + JSON.stringify(paragraph.id) + " /></div>";
+          article = "<div  class='paragraphContainer ui-state-default' data-type='image' data-photo_id=\"" + paragraph.id + "\"><img alt=" + JSON.stringify(paragraph.id) + " src=" + JSON.stringify(paragraph.path) + " title=" + JSON.stringify(paragraph.id) + " height='50px' width='50px' /></div>";
         }
         else if (JSON.stringify(paragraph.type)=='"video"') {
           article = "<div  class='paragraphContainer ui-state-default' data-type='video' data-code=\"" + paragraph.code + "\"><iframe width=\"480\" height=\"290\" data-code=\"" + paragraph.code + "\" src=\"http://www.youtube.com/embed/" + paragraph.code+ "\" frameborder=\"0\" allowfullscreen></iframe></div>";
@@ -232,7 +231,7 @@
       controlDiv = '<div id="elementControl"><span id="elementDel">刪除</span> | <span id="elementEdit">編輯</span> | </div>';
     }
     else if( $(paragraph).data("type") == "image" ) {
-      controlDiv = '<div id="elementControl"><a class="photoDelete" href="/articles/<%= params[:id]%>/deletePhoto/' + $(paragraph).children()[0].title + '" data-method="delete" rel="nofollow" data-remote="true">刪除</a>';
+      controlDiv = '<div id="elementControl"><a class="photoDelete" href="/articles/<%= params[:id]%>/deletePhoto/' + $(paragraph).data("photo_id") + '" data-method="delete" rel="nofollow" data-remote="true">刪除</a>';
     }
     else if( $(paragraph).data("type") == "video" ) {
       controlDiv = '<div id="elementControl"><span id="elementDel">刪除</span>';
@@ -271,7 +270,6 @@
         }
       });      
     });
-
   }
   function nl2br(string) { return string.replace(/\n/g, "<br />");}
   function br2nl(string) { return string.replace(/<br[ \/]*>/g, "\n");}

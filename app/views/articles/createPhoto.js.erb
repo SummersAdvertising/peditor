@@ -1,1 +1,9 @@
-newImage("<%= @photo.id %>","<%= @photo.image %>");
+if("<%= @photo.id %>" != ""){
+	newImage("<%= @photo.id %>","<%= @photo.image %>");
+}
+else{
+	alert("this photo is already existed");
+	$('#new_photo').each (function(){
+		this.reset();
+	});
+}

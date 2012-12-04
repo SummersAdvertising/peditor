@@ -68,6 +68,7 @@ class ArticlesController < ApplicationController
       else
         format.html { render action: "new" }
         format.json { render json: @photo.errors, status: :unprocessable_entity }
+        format.js
       end
     end
   end
