@@ -140,7 +140,6 @@
     placeholder: "ui-state-highlight",
     stop: function( event, ui ) {saveArticle("#edit_article_<%= params[:id]%>");}
   });
-  $( ".sortable" ).disableSelection();
 
   /* save and update the article */
   function contentPack(){
@@ -251,6 +250,9 @@
       var paragraph = $(this).parent().next();
       if(!$("#editDiv").html()){
         $(this).parent().parent().append("<div id='editDiv'><textarea id='editedContent' rows='4' cols='50'></textarea><input type='button' id='editFinish' value='完成修改'/></div>");
+
+        //avoid content in textbox can't not be editted due to the using of jquery sortable
+        $( "#editedContent" ).disableSelection();
       } 
       removeEditPath = true;
       $('textarea').bind('click.sortable mousedown.sortable',function(ev){ ev.target.focus();});
