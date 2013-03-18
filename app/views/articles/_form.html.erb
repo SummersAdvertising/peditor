@@ -32,7 +32,19 @@
 
 <div id="addParagraph">
   <h5>add paragraph</h5>
-  <textarea id="newParagraphContent" placeholder="請將段落輸入在此處"></textarea><br />
+  <select id="newParagraphFontSize" >
+    <option value="" selected="selected">-- 大小 --</option>
+    <option value="14">14</option>
+    <option value="28">28</option>
+  </select>
+  <select id="newParagraphColor" >
+    <option value="" selected="selected">-- 顏色 --</option>
+    <option value="#000">black</option>
+    <option value="#00F">blue</option>
+  </select><br />
+  <textarea id="newParagraphContent" placeholder="請將段落輸入在此處" cols="50" rows="8"></textarea><br />
+  <input type="text" id="newParagraphLink" placeholder="此段落連結至何處（若無請勿輸入）" size="80" /><br />
+  <br />
   <button id="newParagraph">建立文字段落</button>
 </div>
 
@@ -61,6 +73,7 @@
 .paragraphContainer { border-width: 1px; border-style: solid; margin: 5px;}
 </style>
 <script type="text/javascript">
+  var form = "#edit_article_<%= params[:id]%>";
   //show content
   showContent();
 
@@ -78,15 +91,35 @@
 
   $("#newParagraph").click(function(){
     if($("#newParagraphContent").val()){
+      /* add style to the paragraph */
+      var style = 'style="';
+      
+      if ($('#newParagraphFontSize').val().length > 0) {
+        style += "font-size: " + $('#newParagraphFontSize').val() + "px; ";
+      }
+      
+      if ( $('#newParagraphColor').val().length > 0 ) {
+        style += "color: " + $('#newParagraphColor').val() + "; ";        
+      }
+      style += '"';
+
       var container = $('<div class="paragraphContainer ui-state-default" data-type="paragraph"></div>');
-      var paragraph = $("<p  class='paragraph'>" + $("#newParagraphContent").val().replace(/\n/g, "<br />") + "</p>");
+      var content = $("#newParagraphContent").val().replace(/\n/g, "<br />");
+                      
+      var paragraph = $('<p class="paragraph" ' + style + ' >' + content + "</p>");
+      
+      if ( $('#newParagraphLink').val().length > 0 ) {
+          var contentLink =  $('<a target="_blank" href="' + $('#newParagraphLink').val() + '"></a>').html(paragraph.html());
+          paragraph.html('');
+          paragraph.append(contentLink);
+      }
+      
       container.append(paragraph);
 
       $("#articleContent").append(container);
-      $(container).bind("click",function(){paragraphClick(this);});
       $("#newParagraphContent").val('');
 
-      saveArticle("#edit_article_<%= params[:id]%>");
+      saveArticle();
     }
     else{
       alert("請輸入內容");
@@ -100,7 +133,7 @@
       this.reset();
     });
 
-    saveArticle("#edit_article_<%= params[:id]%>");    
+    saveArticle();    
   }
 
   $("#newVideo").click(function() {    
@@ -115,7 +148,7 @@
       $("#newVideoContent").val('');
       $("#videoPreview").html('');
 
-      saveArticle("#edit_article_<%= params[:id]%>");
+      saveArticle();
     }
     else{
       alert("請輸入內容");
@@ -138,7 +171,7 @@
   /* paragraphs sortable */
   $( ".sortable" ).sortable({
     placeholder: "ui-state-highlight",
-    stop: function( event, ui ) {saveArticle("#edit_article_<%= params[:id]%>");}
+    stop: function( event, ui ) {saveArticle();}
   });
 
   /* save and update the article */
@@ -151,7 +184,17 @@
       if($(this).is("p")){
         var p = new Object();
         p.type = "paragraph";
-        p.content=$(this).html();
+        p.color = $(this).css('color');
+        p.fontSize = $(this).css('font-size');
+
+        if ( $(this).children('a').length > 0 ) {         
+          p.link = $(this).children('a').attr('href');          
+          p.content=$(this).children('a').html();
+        } else {
+          p.content=$(this).html();         
+        }
+        console.log(p);
+
         obj.article.push(p);
       }
       else if ($(this).is("img")){
@@ -173,10 +216,10 @@
     $("#article_content").val(article);
   }
 
-  function saveArticle(formArticle){
+  function saveArticle(){
     contentPack();
 
-    $(formArticle).ajaxSubmit({
+    $(form).ajaxSubmit({
       beforeSubmit: function(a,f,o) {
       o.dataType = 'json';
     },
@@ -195,7 +238,14 @@
 
         if(JSON.stringify(paragraph.type)=='"paragraph"')
         {
-          article = "<div class='paragraphContainer ui-state-default' data-type='paragraph'><p>"+jsonReplace(JSON.stringify(paragraph.content)).replace(/\\n/g, "<br />")+"</p>";
+          article = "<div class='paragraphContainer ui-state-default' data-type='paragraph'><p style = ' font-size: "+paragraph.fontSize+"; color: "+paragraph.color+"'>";
+
+          if(paragraph.link){
+            article += "<a target='_blank' href='"+paragraph.link+"'>"+jsonReplace(JSON.stringify(paragraph.content)).replace(/\\n/g, "<br />")+"</a></p></div>";
+          }
+          else{
+            article += jsonReplace(JSON.stringify(paragraph.content)).replace(/\\n/g, "<br />")+"</p></div>";
+          }
         }
         else if(JSON.stringify(paragraph.type)=='"image"')
         {
@@ -243,7 +293,7 @@
   function bindControls(){
     $("#elementDel").unbind().click(function(){
       $(this).parent().parent().remove();
-      saveArticle("#edit_article_<%= params[:id]%>");
+      saveArticle();
     });
 
     $("#elementEdit").unbind().click(function(){
@@ -268,7 +318,7 @@
           $("#editDiv").remove();
 
           $(".paragraphContainer").unbind().bind("click",function(){paragraphClick(this);});
-          saveArticle("#edit_article_<%= params[:id]%>");
+          saveArticle();
         }
       });      
     });

@@ -19,8 +19,7 @@ $(document).ready(function() {
 	function showContent(){
     if($("#article_content").val())
     {
-      console.log($("#article_content").val());
-      var obj = jQuery.parseJSON($("#article_content").val());
+      var obj = JSON.parse($("#article_content").val());
       var article = "";
       for(i=0;i<obj.article.length;i++)
       {
@@ -28,7 +27,14 @@ $(document).ready(function() {
 
         if(JSON.stringify(paragraph.type)=='"paragraph"')
         {
-          article = "<div class='paragraphContainer' data-type='paragraph'><p>"+jsonReplace(JSON.stringify(paragraph.content)).replace(/\\n/g, "<br />")+"</p>";
+          article = "<div class='paragraphContainer ui-state-default' data-type='paragraph'><p style = ' font-size: "+paragraph.fontSize+"; color: "+paragraph.color+"'>";
+
+          if(paragraph.link){
+            article += "<a target='_blank' href='"+paragraph.link+"'>"+jsonReplace(JSON.stringify(paragraph.content)).replace(/\\n/g, "<br />")+"</a></p></div>";
+          }
+          else{
+            article += jsonReplace(JSON.stringify(paragraph.content)).replace(/\\n/g, "<br />")+"</p></div>";
+          }
         }
         else if(JSON.stringify(paragraph.type)=='"image"')
         {
