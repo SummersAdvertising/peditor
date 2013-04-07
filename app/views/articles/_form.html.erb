@@ -1,33 +1,22 @@
 <%= form_for(@article) do |f| %>
-  <% if @article.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@article.errors.count, "error") %> prohibited this article from being saved:</h2>
+<div class="field">
+  <%= f.label :name %><br />
+  <%= f.text_field :name %>
+</div>
 
-      <ul>
-      <% @article.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+<div class="field">
+  <%= f.label :content %><%= f.text_field :content, :style => "display:none;" %>
+  <!--show the content of article -->
+  <div id="articleContent" class="sortable"></div>
+</div>
 
-  <div class="field">
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label :content %><%= f.text_field :content, :style => "display:none;" %>
-
-    <!--show the content of article -->
-    <div id="articleContent" class="sortable"></div>
-  
-  </div>
-  <div class="actions">
-    <%= f.submit "save article" %>
-  </div>
+<div class="actions">
+  <%= f.submit "save article" %>
+</div>
 <% end %>
 
 <hr />
+
 <p>add a <span class="showDiv">paragraph</span> | <span class="showDiv">image</span> | <span class="showDiv">video</span></p> 
 
 <div id="addParagraph">
