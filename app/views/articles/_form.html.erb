@@ -1,9 +1,15 @@
 <script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
 <script src="/js/editor.js"></script>
 <script src="/js/editor_p.js"></script>
+<script src="/js/editor_img.js"></script>
+<script src="/js/editor_video.js"></script>
 <style>
 .ui-state-highlight { height: 50px; }
 .paragraphContainer { border-width: 1px; border-style: solid; margin: 5px;}
+.editorList { padding-left: 0px;}
+.editorList li{ display: inline-block; padding-left: 5px;}
+.editorContent .editorChild{ display: none;}
+.editorContent .active{ display: block;}
 </style>
 
 <%= form_for(@article) do |f| %>
@@ -12,58 +18,23 @@
   <%= f.label :name %><br />
   <%= f.text_field :name %>
 </div>
-<div class="field">
-  <%= f.label :content %><%= f.text_field :content, :style => "display:none;" %>
-  <!--show the content of article -->
-  <div id="articleContent" class="sortable"></div>
-</div>
+
+<div id="editorPanel"></div>
+
+<hr />
+
+<!--show the content of article -->
+<%= f.label :content %><%= f.text_field :content, :style => "display:none;" %>
+<div id="articleContent"></div>
+
 <div class="actions">
   <%= f.submit "save article" %>
 </div>
 
 <% end %>
 
-<hr />
-
-<p>add a <span class="showDiv">paragraph</span> | <span class="showDiv">image</span> | <span class="showDiv">video</span></p> 
-
-<div id="addParagraph">
-  <h5>add paragraph</h5>
-  <select id="newParagraphFontSize" >
-    <option value="" selected="selected">-- 大小 --</option>
-    <option value="14">14</option>
-    <option value="28">28</option>
-  </select>
-  <select id="newParagraphColor" >
-    <option value="" selected="selected">-- 顏色 --</option>
-    <option value="#000">black</option>
-    <option value="#00F">blue</option>
-  </select><br />
-  <textarea id="newParagraphContent" placeholder="請將段落輸入在此處" cols="50" rows="8"></textarea><br />
-  <input type="text" id="newParagraphLink" placeholder="此段落連結至何處（若無請勿輸入）" size="80" /><br />
-  <br />
-  <button id="newParagraph">建立文字段落</button>
-</div>
-
-<div id="addImage" style="display:none;"> 
-  <%= form_for (@photo), :url => 'uploadPhoto', :html => {:multipart => true, :remote => true} do |p| %>
-  <h5>add image</h5>
-  <%= p.file_field :image %>
-  <div class="actions">
-    <%= p.submit %>
-  </div>
-  <% end %>
-</div>
-
-<div id="addVideo" style="display:none;">
-  <h5>add video</h5>
-  <input id="newVideoContent" style="width: 320px;" placeholder="請將整段youtube連結貼到此處" />
-  <button id="newVideo">建立影片段落</button>
-  <div id="videoPreview"></div>
-</div>
-
 <script type="text/javascript">
 $(document).ready(function(){
-editor.init({});
+  editor.init();
 });
 </script>

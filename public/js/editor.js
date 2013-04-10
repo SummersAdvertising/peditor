@@ -1,122 +1,91 @@
 var editor = {
-	articleModel: "article",
-	photoModel: "photo",
-
+	elements: ["paragraph", "image", "video"],
 	settings: {
-		elements: { p: true, linkedp: true, img: true, linkedimg: true, video: true },
-
-		paragraphBox: {type:"div", className:"paragraphContainer"},
-		pStyle: {className: {title: "標題", content: "內文"}, fontColor:{red: "紅色", blue: "藍色"}, fontSize:[14, 28] },
-
-		imgValidate: {enable: true, type:["png", "jpg", "gif"], size: "5"},
-
-		controlpanelBox: {enable: false, type:"div", className:"controlPanel"},
-		controlpanel: {parentType: "ul", parentClass:"", childType: "li", childClass: "", childEdit: "編輯", childDel: "刪除"}
-
+		articleModel: "article",
+		photoModel: "photo",
+		linkedp: true,
+		linkedimg: true,
+		paragraphFontClass: {title: "標題", content: "內文"}, 
+		paragraphFontColor: {default: "大小", "#000": "黑色", "#00F": "藍色"}, 
+		paragraphFontSize: {default: "大小", 14:14, 28:28}
 	},
-	init: function(settings, articleModel, photoModel){
-		var elements = ["p", "img", "video"];
-		for(element in elements){
-			// var paragraph = ;
-			//console.log(editor[elements[element]]);
-			if(editor[elements[element]]){
-				console.log(this);
-			}
-			
-		}
-		
-		editor.articleModel = articleModel? articleModel : editor.articleModel;
-		editor.photoModel = photoModel? photoModel : editor.photoModel;
-
+	init: function(settings){
 		editor.settings = settings? setEditor(editor.settings, settings) : editor.settings;
-		initialize(editor.settings);
+
+		$("#articleContent").addClass("sortable");
+		$( ".sortable" ).sortable();
+
+		var editorList = $("<ul>");
+		editorList.addClass("editorList");
+
+		var editorContent = $("<div>");
+		editorContent.addClass("editorContent");
+
+		var editorAdd = $("<div>");
+		editorAdd.addClass("editorAdd");
+		var btnAdd = $("<a>");
+		btnAdd.attr("href", "#");
+		btnAdd.append("新增");
+		editorAdd.append(btnAdd);
+
+		$("#editorPanel").append(editorList).append(editorContent).append(editorAdd);
+		
+		for(var index in editor.elements){
+			var element = editor[editor.elements[index]];
+			if(element){
+				element.init();
+			}
+		}
+
+		bindPanelControl();
+		editor.show();
 	},
-	showContent: function(){
-		var contentEle = $("#"+editor.articleModel+"_content");
+	show: function(){
+		var contentEle = $("#"+editor.settings.articleModel+"_content");
 
 		if(contentEle && contentEle.val()){
-			showContent(contentEle.val());
+			var obj = JSON.parse(contentEle.val());
+
+			for(var i=0;i<obj.article.length;i++)
+			{
+				var paragraph = obj.article[i];
+				editor[paragraph.type].show(paragraph);
+			}
 		}
 	},
-	editContent:function(){}
+	resetForm: function(){
+		$(".editorChild .active").children(function(){
+			console.log(this);
+			$(this).reset();
+		});
+	}
 };
-
-function initialize(settings){
-	editor.showContent();
-}
 
 function setEditor(defaultSet, customSet){
 	for(setting in customSet){
-		if(typeof(customSet[setting]) == "object"){
-			for(child in customSet[setting]){
-				defaultSet[setting][child] = customSet[setting][child];
-			}
-		}
-		else{
-			defaultSet[setting] = customSet[setting];
-		}
+		defaultSet[setting] = customSet[setting];
 	}
 	return defaultSet;
 }
 
-function showContent(content){
-	var obj = jQuery.parseJSON(content);
+function bindPanelControl(){
+	$(".editorList li:first").addClass("active");
+	$(".editorContent .editorChild:first").addClass("active");
 
-	var article = "";
-	for(i=0;i<obj.article.length;i++)
-	{
-		var paragraph = obj.article[i];
+	$(".editorList li").click(function(event){
+		event.preventDefault();
+		$(".editorList .active").removeClass("active");
+		$(".editorContent .active").removeClass("active");
+		$(this).addClass("active");
 
-		if(paragraph.type == "paragraph")
-        {
-          var paragraphBox = $("<"+editor.settings.paragraphBox.type+">");
-          paragraphBox.addClass(editor.settings.paragraphBox.className);
-          paragraphBox.attr("data-type", "paragraph");
+		var indexActive = $(".editorList li").index(this);
+		$(".editorContent .editorChild").eq(indexActive).addClass("active");
+	});
 
-          var p = $("<p>");
-          p.css("font-size", paragraph.fontSize).css("color", paragraph.color);
-
-          if(paragraph.link){
-          	var a = $("<a>");
-          	a.attr("target", "_blank").attr("href", paragraph.link);
-          	a.html((paragraph.content).replace(/\\n/g, "<br />"));
-
-          	p.append(a);
-          }
-          else{
-          	p.html((paragraph.content).replace(/\\n/g, "<br />"));
-          }
-
-          paragraphBox.append(p);
-        }
-        else if(paragraph.type == "image")
-        {
-          var paragraphBox = $("<"+editor.settings.paragraphBox.type+">");
-          paragraphBox.addClass(editor.settings.paragraphBox.className);
-          paragraphBox.attr("data-type", "image");
-
-          var img = $("<img>");
-          img.attr("alt", JSON.stringify(paragraph.id));
-          img.attr("src", JSON.stringify(paragraph.path));
-          img.attr("title", JSON.stringify(paragraph.id));
-
-          paragraphBox.append(img);
-
-        }
-        else if (paragraph.type == "video") {
-          var paragraphBox = $("<"+editor.settings.paragraphBox.type+">");
-          paragraphBox.addClass(editor.settings.paragraphBox.className);
-          paragraphBox.attr("data-type", "video");
-
-          var iframe = $("<iframe>");
-          iframe.attr("width", "480").attr("height", "290").attr("frameborder", "0").attr("allowfullscreen", "");
-          iframe.attr("data-code", paragraph.code);
-          iframe.attr("http://www.youtube.com/embed/" + paragraph.code);
-
-          paragraphBox.append(iframe);
-        }
-
-        $("#articleContent").append(paragraphBox);
-    }
+	$(".editorAdd").click(function(){
+		var element = $(".editorList .active").data("type");
+		editor[element].add();
+	});
 }
+
 function jsonReplace(string){return string.replace(/"([^"]*)"/g, "$1");}
