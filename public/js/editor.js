@@ -53,10 +53,9 @@ var editor = {
 			}
 		}
 	},
-	resetForm: function(){
-		$(".editorChild .active").children(function(){
-			console.log(this);
-			$(this).reset();
+	resetChild: function(){
+		$(".editorChild.active").find("*").each(function(){
+			$(this).val("");
 		});
 	}
 };

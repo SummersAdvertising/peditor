@@ -26,6 +26,7 @@ editor.image = {
 	},
 	add: function(){
 		console.log("add img");
+		editor.resetChild();
 	},
 	show: function(paragraph){
 		var paragraphBox = $("<div>");

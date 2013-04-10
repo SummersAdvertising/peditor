@@ -21,6 +21,7 @@ editor.video = {
 	},
 	add: function(){
 		console.log("add video");
+		editor.resetChild();
 	},
 	show: function(paragraph){
 		var paragraphBox = $("<div>");

@@ -60,7 +60,7 @@ editor.paragraph = {
 		paragraph.content = $("#newParagraphContent").val();
 
 		editor.paragraph.show(paragraph);
-		editor.resetForm();
+		editor.resetChild();
 	},
 	show: function(paragraph){
 		var paragraphBox = $("<div>");
@@ -160,7 +160,7 @@ editor.paragraph = {
 		editor.paragraph.bindEdit(edit);
 
 		var del = $("<a>");
-		edit.attr("data-control", "del");
+		del.attr("data-control", "del");
 		del.append("刪除");
 		del.click(function(){
 			paragraphBox.remove();
