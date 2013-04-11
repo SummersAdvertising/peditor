@@ -40,15 +40,40 @@ var editor = {
 		bindPanelControl();
 		editor.show();
 	},
+	save: function(callback){
+		if(callback){
+			callback();
+		}
+		else{
+			editor.pack();
+		}
+	},
+	ajaxupdate: function(){
+		$("form:first").ajaxSubmit({
+			beforeSubmit: function(a,f,o) {
+				o.dataType = 'json';
+			},
+			complete: function(XMLHttpRequest, textStatus) {}
+		});
+	},
+	pack: function(){
+		var article = new Array();
+		$("#articleContent .paragraphContainer").each(function(){
+			article.push(editor[$(this).data("type")].pack(this));
+		});
+
+		$("#"+editor.settings.articleModel+"_content").val(JSON.stringify(article));
+		editor.save(editor.ajaxupdate);
+	},
 	show: function(){
 		var contentEle = $("#"+editor.settings.articleModel+"_content");
 
 		if(contentEle && contentEle.val()){
-			var obj = JSON.parse(contentEle.val());
+			var article = JSON.parse(contentEle.val());
 
-			for(var i=0;i<obj.article.length;i++)
+			for(var i = 0, length = article.length; i < length; i++)
 			{
-				var paragraph = obj.article[i];
+				var paragraph = article[i];
 				editor[paragraph.type].show(paragraph);
 			}
 		}

@@ -61,6 +61,8 @@ editor.paragraph = {
 
 		editor.paragraph.show(paragraph);
 		editor.resetChild();
+
+		editor.save();
 	},
 	show: function(paragraph){
 		var paragraphBox = $("<div>");
@@ -136,7 +138,8 @@ editor.paragraph = {
 					paragraphContainer.children("p:first").show().html(editContent);
 				}
 
-				
+				editor.save();
+
 				$(".controlPanel a[data-control = edit]").each(function(){
 					editor.paragraph.bindEdit(this);
 				});
@@ -176,5 +179,25 @@ editor.paragraph = {
 			var paragraphContainer = $(this).parents(".paragraphContainer");
 			editor.paragraph.edit(paragraphContainer, controlPanel);
 		});
+	},
+	pack: function(paragraphContainer){
+		var paragraph = new Object();
+		var content = $(paragraphContainer).children("p:first");
+
+		paragraph.type = "paragraph";
+        paragraph.color = content.css('color');
+        paragraph.fontSize = content.css('font-size');
+
+        var a = $(content).children('a:first');
+
+        if ( a.length > 0 ) {         
+          paragraph.link = a.attr('href');          
+          paragraph.content = a.html();
+        }
+        else {
+          paragraph.content = content.html();         
+        }
+
+		return paragraph;
 	}
 };
