@@ -1,5 +1,4 @@
 editor.paragraph = {
-	element: "p",
 	init: function(){
 		var li = $("<li>");
 		li.attr("data-type", "paragraph");

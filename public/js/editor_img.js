@@ -125,5 +125,5 @@ editor.image = {
 		controlPanel.append(del);
 		paragraphBox.prepend(controlPanel);
 
-	},
+	}
 };

@@ -1,5 +1,4 @@
 editor.video = {
-	element: "video",
 	init: function(){
 		var li = $("<li>");
 		li.attr("data-type", "video");
@@ -21,12 +20,18 @@ editor.video = {
 			alert("請貼上影片連結");
 			return;
 		}
-		var video = new Object();
 
-		editor.paragraph.show(video);
+		var video = editor.video.getVideoInfo($("#newVideoContent").val());
+
 		editor.resetChild();
 
-		editor.save();
+		if(video.provider){
+			editor.video.show(video);
+			editor.save();
+		}
+		else{
+			alert("不支援此連結");
+		}
 	},
 	show: function(paragraph){
 		var paragraphBox = $("<div>");
@@ -34,10 +39,71 @@ editor.video = {
 		paragraphBox.attr("data-type", "video");
 
 		var iframe = $("<iframe>");
-		iframe.attr("width", "480").attr("height", "290").attr("frameborder", "0").attr("allowfullscreen", "");
-		iframe.attr("data-code", paragraph.code);
-		iframe.attr("http://www.youtube.com/embed/" + paragraph.code);
+
+		iframe.attr("width", "480").attr("height", "290").attr("frameborder", "0").attr("frameborder", "");
+		iframe.attr("data-provider", paragraph.provider);
+		iframe.attr("src", paragraph.embedcode);
 
 		paragraphBox.append(iframe);
+		$("#articleContent").append(paragraphBox);
+
+		this.bindControl(paragraphBox);
+	},
+	pack: function(paragraphContainer){
+		var content = $(paragraphContainer).children("iframe:first");
+		var paragraph = new Object();
+		paragraph.type = "video";
+		paragraph.provider = content.data("provider");
+		paragraph.embedcode = content.attr("src");
+
+        return paragraph;
+	},
+	getVideoInfo: function(link){
+		var video = new Object();
+		video.type = "video";
+
+		var providerList = ["youtube", "vimeo"];
+		for( var p in providerList ) {
+			var re = new RegExp("/.*" + providerList[p] + ".*/", "g");
+			if ( re.test(link) ) {
+				video.provider = providerList[p];
+			}
+		}
+
+		if(video.provider){
+			switch(video.provider){
+				case "vimeo":
+				var sourceLink = "http://player.vimeo.com/video/";
+				var code = /[a-zA-Z0-9\?\.\:]+\/([a-zA-Z0-9_\-]+)&?.*/.exec(link)[1];
+				video.embedcode = sourceLink + code;
+				break;
+				
+				case "youtube":
+				var sourceLink = "http://www.youtube.com/embed/";
+				var code = /[a-zA-Z0-9\?\.\:\/&=]+v=([a-zA-Z0-9_\-]+)&?.*/.exec(link)[1];
+				video.embedcode = sourceLink + code;
+				break;
+			}
+
+			return video;
+		}
+		else{
+			return false;
+		}
+	},
+	bindControl: function(paragraphBox){
+		var controlPanel = $("<div>");
+		controlPanel.addClass("controlPanel");
+
+		var del = $("<a>");
+		del.append("刪除");
+		del.click(function(){
+			paragraphBox.remove();
+			editor.save();
+		});
+
+		controlPanel.append(del);
+		paragraphBox.prepend(controlPanel);
+
 	}
 };
