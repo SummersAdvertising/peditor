@@ -46,6 +46,10 @@ editor.paragraph = {
 		$(".editorContent").append(editorChild);
 	},
 	add: function(){
+		if(!$("#newParagraphContent").val()){
+			alert("請輸入內容");
+			return ;
+		}
 		var paragraph = new Object();
 
 		if ($("#newParagraphFontSize").val() && $("#newParagraphFontSize").val().length > 0) {
@@ -167,6 +171,7 @@ editor.paragraph = {
 		del.append("刪除");
 		del.click(function(){
 			paragraphBox.remove();
+			editor.save();
 		});
 
 		controlPanel.append(edit).append(del);

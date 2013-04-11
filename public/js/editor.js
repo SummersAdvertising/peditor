@@ -3,6 +3,9 @@ var editor = {
 	settings: {
 		articleModel: "article",
 		photoModel: "photo",
+		photoColumn: "image",
+		photoUpload: "uploadPhoto",
+		photoDestroy: "deletePhoto",
 		linkedp: true,
 		linkedimg: true,
 		paragraphFontClass: {title: "標題", content: "內文"}, 
@@ -10,10 +13,14 @@ var editor = {
 		paragraphFontSize: {default: "大小", 14:14, 28:28}
 	},
 	init: function(settings){
-		editor.settings = settings? setEditor(editor.settings, settings) : editor.settings;
+		editor.settings = settings? editor.setEditor(editor.settings, settings) : editor.settings;
 
 		$("#articleContent").addClass("sortable");
-		$( ".sortable" ).sortable();
+		$( ".sortable" ).sortable({
+			placeholder: "ui-state-highlight",
+			disable: true,
+			stop: function( event, ui ) {editor.save();}
+		});
 
 		var editorList = $("<ul>");
 		editorList.addClass("editorList");
@@ -37,7 +44,7 @@ var editor = {
 			}
 		}
 
-		bindPanelControl();
+		editor.bindPanelControl();
 		editor.show();
 	},
 	save: function(callback){
@@ -56,13 +63,18 @@ var editor = {
 			complete: function(XMLHttpRequest, textStatus) {}
 		});
 	},
-	pack: function(){
+	pack: function(upload){
 		var article = new Array();
 		$("#articleContent .paragraphContainer").each(function(){
 			article.push(editor[$(this).data("type")].pack(this));
 		});
 
+		if(upload){
+			article.push(upload);
+		}
+
 		$("#"+editor.settings.articleModel+"_content").val(JSON.stringify(article));
+
 		editor.save(editor.ajaxupdate);
 	},
 	show: function(){
@@ -82,34 +94,30 @@ var editor = {
 		$(".editorChild.active").find("*").each(function(){
 			$(this).val("");
 		});
+	},
+	setEditor: function(defaultSet, customSet){
+		for(setting in customSet){
+			defaultSet[setting] = customSet[setting];
+		}
+		return defaultSet;
+	},
+	bindPanelControl: function(){
+		$(".editorList li:first").addClass("active");
+		$(".editorContent .editorChild:first").addClass("active");
+
+		$(".editorList li").click(function(event){
+			event.preventDefault();
+			$(".editorList .active").removeClass("active");
+			$(".editorContent .active").removeClass("active");
+			$(this).addClass("active");
+
+			var indexActive = $(".editorList li").index(this);
+			$(".editorContent .editorChild").eq(indexActive).addClass("active");
+		});
+
+		$(".editorAdd").click(function(){
+			var element = $(".editorList .active").data("type");
+			editor[element].add();
+		});
 	}
 };
-
-function setEditor(defaultSet, customSet){
-	for(setting in customSet){
-		defaultSet[setting] = customSet[setting];
-	}
-	return defaultSet;
-}
-
-function bindPanelControl(){
-	$(".editorList li:first").addClass("active");
-	$(".editorContent .editorChild:first").addClass("active");
-
-	$(".editorList li").click(function(event){
-		event.preventDefault();
-		$(".editorList .active").removeClass("active");
-		$(".editorContent .active").removeClass("active");
-		$(this).addClass("active");
-
-		var indexActive = $(".editorList li").index(this);
-		$(".editorContent .editorChild").eq(indexActive).addClass("active");
-	});
-
-	$(".editorAdd").click(function(){
-		var element = $(".editorList .active").data("type");
-		editor[element].add();
-	});
-}
-
-function jsonReplace(string){return string.replace(/"([^"]*)"/g, "$1");}

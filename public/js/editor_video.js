@@ -9,23 +9,28 @@ editor.video = {
 		var editorChild = $("<div>");
 		editorChild.addClass("editorChild");
 		var link = $("<input>");
-		link.attr("id", "newVideoContent").attr("placeholder", "請將整段youtube連結貼到此處").css("width", "320px");
-		var preview = $("<div>");
-		preview.attr("id", "videoPreview");
+		link.attr("id", "newVideoContent").attr("placeholder", "請貼上影片連結").css("width", "320px");
 		var br = $("<br>");
 
-		editorChild.append(link).append(br).append(preview);
-
+		editorChild.append(link).append(br);
 
 		$(".editorContent").append(editorChild);
 	},
 	add: function(){
-		console.log("add video");
+		if(!$("#newVideoContent").val()){
+			alert("請貼上影片連結");
+			return;
+		}
+		var video = new Object();
+
+		editor.paragraph.show(video);
 		editor.resetChild();
+
+		editor.save();
 	},
 	show: function(paragraph){
 		var paragraphBox = $("<div>");
-		paragraphBox.addClass(editor.settings.paragraphBox.className);
+		paragraphBox.addClass("paragraphContainer");
 		paragraphBox.attr("data-type", "video");
 
 		var iframe = $("<iframe>");

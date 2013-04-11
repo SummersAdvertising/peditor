@@ -1,9 +1,18 @@
-if("<%= @photo.id %>" != ""){
-	newImage("<%= @photo.id %>","<%= @photo.image %>");
+if("<%= @photo.id %>"){
+	var image = new Object();
+	image.type = "image";
+	image.id = "<%= @photo.id %>";
+	image.path = "<%= @photo.image %>";
+	
+	if($("#newImageLink").val()){
+		image.link = $("#newImageLink").val();
+	}
+
+	editor.resetChild();
+
+	editor.image.update(image);
+	
 }
 else{
-	alert("this photo is already existed");
-	$('#new_photo').each (function(){
-		this.reset();
-	});
+	alert("已經上傳過同樣名稱的圖片");
 }
