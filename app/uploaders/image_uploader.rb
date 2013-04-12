@@ -6,6 +6,10 @@ class ImageUploader < CarrierWave::Uploader::Base
     "uploads/#{model.article_id}"
   end
 
+  def filename
+    model.id ? "#{model.id}-#{original_filename}" : original_filename
+  end
+
   def extension_white_list
     %w(jpg jpeg gif png)
   end

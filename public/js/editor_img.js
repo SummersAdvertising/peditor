@@ -1,7 +1,7 @@
 editor.image = {
 	photoModel: editor.settings.photoModel,
-	fileinputID: editor.settings.photoModel+"_"+editor.settings.photoColumn,
-	fileinputName: editor.settings.photoModel+"["+editor.settings.photoColumn+"]",
+	fileinputID: editor.settings.photoModel + "_" + editor.settings.photoColumn,
+	fileinputName: editor.settings.photoModel + "[" + editor.settings.photoColumn + "]",
 	photoUpload: editor.settings.photoUpload,
 	photoDestroy: editor.settings.photoDestroy,
 	init: function(){
@@ -19,18 +19,20 @@ editor.image = {
 		var input = $("<input>");
 		input.attr("id", editor.image.fileinputID).attr("name", editor.image.fileinputName).attr("type", "file");
 
-		var link = $("<input>");
-		link.attr("type", "text").attr("id", "newImageLink").attr("placeholder", "此段落連結至何處（若無請勿輸入）").attr("size", "80");
-		
-		var br = $("<br>");
+		form.append(input).append($("<br>"));
 
-		form.append(input).append(br).append(link);
+		if(editor.settings.linkedimg){
+			var link = $("<input>");
+			link.attr("type", "text").attr("id", "newImageLink").attr("placeholder", "此段落連結至何處（若無請勿輸入）").attr("size", "80");
+			form.append(link);
+		}
+
 		editorChild.append(form);
 		$(".editorContent").append(editorChild);
 	},
 	add: function(){
 		if(!$("#"+editor.image.fileinputID).val()){
-			alert("請選擇要上傳的圖片");
+			editor.alert("請選擇要上傳的圖片", "error");
 			return ;
 		}
 

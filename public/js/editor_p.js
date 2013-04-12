@@ -14,53 +14,66 @@ editor.paragraph = {
 			if(editor.settings[selectList[item]]){
 				var type = selectList[item];
 				var select = $("<select>");
-				select.attr("id", ("new_"+type) );
+				select.attr("id", ("new" + capitalize(type)) );
 
-				for(var option in editor.settings[type]){
-					if(option == "default"){}
-					// console.log(option);
+				for(var child in editor.settings[type]){
+					var option = $("<option>");
+					
+					option.append(editor.settings[type][child]);
+
+					if(child == "default"){
+						option.attr("selected", "selected");
+						option.attr("value", "false");
+						select.prepend(option);
+					}
+					else{
+						option.attr("value", child.toString());
+						select.append(option);
+					}
 				}
+
+				editorChild.append(select);
 				
 			}
+			if(item == selectList.length-1){
+				editorChild.append($("<br>"));
+			}
 		}
-		// <select id="newParagraphFontSize" >
-  //       <option value="" selected="selected">-- 大小 --</option>
-  //       <option value="14">14</option>
-  //       <option value="28">28</option>
-  //     </select>
-  //     <select id="newParagraphColor" >
-  //       <option value="" selected="selected">-- 顏色 --</option>
-  //       <option value="#000">black</option>
-  //       <option value="#00F">blue</option>
-  //     </select>
 
 		var text = $("<textarea>");
 		text.attr("id", "newParagraphContent").attr("placeholder", "請將段落輸入在此處").attr("cols", "50").attr("rows", "8");
-		var link = $("<input>");
-		link.attr("type", "text").attr("id", "newParagraphLink").attr("placeholder", "此段落連結至何處（若無請勿輸入）").attr("size", "80");
-		var br = $("<br>");
 
-		editorChild.append(text).append(br).append(link);
-
+		editorChild.append(text).append($("<br>"));
+		
+		if(editor.settings.linkedp){
+			var link = $("<input>");
+			link.attr("type", "text").attr("id", "newParagraphLink").attr("placeholder", "此段落連結至何處（若無請勿輸入）").attr("size", "80");
+			editorChild.append(link);
+		}
+		
 		$(".editorContent").append(editorChild);
 	},
 	add: function(){
 		if(!$("#newParagraphContent").val()){
-			alert("請輸入內容");
+			editor.alert("請輸入內容", "error");
 			return ;
 		}
 		var paragraph = new Object();
+		var paragraphAttrs = ["fontSize", "fontColor", "fontClass", "link", "content"];
 
-		if ($("#newParagraphFontSize").val() && $("#newParagraphFontSize").val().length > 0) {
-			paragraph.fontSize = $("#newParagraphFontSize").val() + "px";
-		}
-		if ($("#newParagraphColor").val() && $("#newParagraphColor").val().length > 0 ) {
-			paragraph.fontSize = $("#newParagraphColor").val();
-		}
-		if ($("#newParagraphLink").val() && $("#newParagraphLink").val().length > 0 ) {
-			paragraph.link = $("#newParagraphLink").val();
-		}
-		paragraph.content = $("#newParagraphContent").val();
+		$.each(paragraphAttrs, function(index, value) {
+			var attrEle = $("#newParagraph"+capitalize(value));
+			if (attrEle.val() && attrEle.val() != "false") {
+				switch(value){
+					case "fontSize":
+						paragraph[value] = attrEle.val() + "px";
+					break;
+					default:
+						paragraph[value] = attrEle.val();
+					break;
+				}
+			}
+		});
 
 		editor.paragraph.show(paragraph);
 		editor.resetChild();
@@ -73,7 +86,15 @@ editor.paragraph = {
 		paragraphBox.attr("data-type", "paragraph");
 
 		var p = $("<p>");
-		p.css("font-size", paragraph.fontSize).css("color", paragraph.color);
+		if(paragraph.fontSize){
+			p.css("font-size", paragraph.fontSize).attr("data-fontsize", paragraph.fontSize);
+		}
+		if(paragraph.fontColor){
+			p.css("color", paragraph.fontColor).attr("data-fontcolor", paragraph.fontColor);
+		}
+		if(paragraph.fontClass){
+			p.addClass(paragraph.fontClass);
+		}
 
 		if(paragraph.link){
 		  var a = $("<a>");
@@ -148,12 +169,12 @@ editor.paragraph = {
 				});
 			}
 			else{
-				alert("請輸入修改內容");
+				editor.alert("請輸入修改內容", "error");
 			}
 			
 		});
 
-		editPanel.append(textarea).append("<br>").append(contentLink? link : "").append("<br>").append(save).append(cancel);
+		editPanel.append(textarea).append($("<br>")).append(contentLink? link : "").append($("<br>")).append(save).append(cancel);
 		paragraphContainer.append(editPanel);
 	},
 	bindControl: function(paragraphBox){
@@ -189,8 +210,9 @@ editor.paragraph = {
 		var content = $(paragraphContainer).children("p:first");
 
 		paragraph.type = "paragraph";
-        paragraph.color = content.css('color');
-        paragraph.fontSize = content.css('font-size');
+        paragraph.fontColor = content.data('fontcolor');
+        paragraph.fontSize = content.data('fontsize');
+        paragraph.fontClass = content.attr("class");
 
         var a = $(content).children('a:first');
 
@@ -205,3 +227,6 @@ editor.paragraph = {
 		return paragraph;
 	}
 };
+function capitalize(str){
+	return str.charAt(0).toUpperCase() + str.slice(1);
+}

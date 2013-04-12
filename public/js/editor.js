@@ -9,7 +9,7 @@ var editor = {
 		linkedp: true,
 		linkedimg: true,
 		paragraphFontClass: {title: "標題", content: "內文"}, 
-		paragraphFontColor: {default: "大小", "#000": "黑色", "#00F": "藍色"}, 
+		paragraphFontColor: {default: "顏色", "#000": "黑色", "#00F": "藍色"}, 
 		paragraphFontSize: {default: "大小", 14:14, 28:28}
 	},
 	init: function(settings){
@@ -56,7 +56,7 @@ var editor = {
 		}
 	},
 	ajaxupdate: function(){
-		$("form:first").ajaxSubmit({
+		$("form, .edit_"+ editor.settings.articleModel).ajaxSubmit({
 			beforeSubmit: function(a,f,o) {
 				o.dataType = 'json';
 			},
@@ -92,7 +92,16 @@ var editor = {
 	},
 	resetChild: function(){
 		$(".editorChild.active").find("*").each(function(){
-			$(this).val("");
+			switch(this.tagName){
+				case "SELECT":
+				$(this).val("1");
+				break;
+				case "OPTION":
+				break;
+				default:
+				$(this).val("");
+				break;
+			}
 		});
 	},
 	setEditor: function(defaultSet, customSet){
@@ -102,13 +111,11 @@ var editor = {
 		return defaultSet;
 	},
 	bindPanelControl: function(){
-		$(".editorList li:first").addClass("active");
-		$(".editorContent .editorChild:first").addClass("active");
+		$(".editorList li:first, .editorContent .editorChild:first").addClass("active");
 
 		$(".editorList li").click(function(event){
 			event.preventDefault();
-			$(".editorList .active").removeClass("active");
-			$(".editorContent .active").removeClass("active");
+			$(".editorList .active, .editorContent .active").removeClass("active");
 			$(this).addClass("active");
 
 			var indexActive = $(".editorList li").index(this);
@@ -119,5 +126,13 @@ var editor = {
 			var element = $(".editorList .active").data("type");
 			editor[element].add();
 		});
+	},
+	alert: function(alertMsg, type){
+		if(window['Alertify']){
+			Alertify.log[type](alertMsg);
+		}
+		else{
+			alert(alertMsg);
+		}
 	}
 };
