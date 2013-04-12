@@ -4,8 +4,8 @@ class Photo < ActiveRecord::Base
 
   mount_uploader :image, ImageUploader
   
-  before_validation :update_filename
-  validates_uniqueness_of :name, :on => :create
+  before_create :update_filename
+  #validates_uniqueness_of :name, :on => :create
   
   private
   def update_filename

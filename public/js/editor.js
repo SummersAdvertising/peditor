@@ -56,7 +56,7 @@ var editor = {
 		}
 	},
 	ajaxupdate: function(){
-		$("form:first").ajaxSubmit({
+		$("form, .edit_"+ editor.settings.articleModel).ajaxSubmit({
 			beforeSubmit: function(a,f,o) {
 				o.dataType = 'json';
 			},
@@ -102,13 +102,11 @@ var editor = {
 		return defaultSet;
 	},
 	bindPanelControl: function(){
-		$(".editorList li:first").addClass("active");
-		$(".editorContent .editorChild:first").addClass("active");
+		$(".editorList li:first, .editorContent .editorChild:first").addClass("active");
 
 		$(".editorList li").click(function(event){
 			event.preventDefault();
-			$(".editorList .active").removeClass("active");
-			$(".editorContent .active").removeClass("active");
+			$(".editorList .active, .editorContent .active").removeClass("active");
 			$(this).addClass("active");
 
 			var indexActive = $(".editorList li").index(this);

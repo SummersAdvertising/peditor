@@ -36,12 +36,17 @@ editor.paragraph = {
 
 		var text = $("<textarea>");
 		text.attr("id", "newParagraphContent").attr("placeholder", "請將段落輸入在此處").attr("cols", "50").attr("rows", "8");
-		var link = $("<input>");
-		link.attr("type", "text").attr("id", "newParagraphLink").attr("placeholder", "此段落連結至何處（若無請勿輸入）").attr("size", "80");
+		
 		var br = $("<br>");
 
-		editorChild.append(text).append(br).append(link);
-
+		editorChild.append(text).append(br);
+		
+		if(editor.settings.linkedp){
+			var link = $("<input>");
+			link.attr("type", "text").attr("id", "newParagraphLink").attr("placeholder", "此段落連結至何處（若無請勿輸入）").attr("size", "80");
+			editorChild.append(link);
+		}
+		
 		$(".editorContent").append(editorChild);
 	},
 	add: function(){
