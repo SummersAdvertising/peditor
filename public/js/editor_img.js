@@ -19,9 +19,7 @@ editor.image = {
 		var input = $("<input>");
 		input.attr("id", editor.image.fileinputID).attr("name", editor.image.fileinputName).attr("type", "file");
 
-		var br = $("<br>");
-
-		form.append(input).append(br);
+		form.append(input).append($("<br>"));
 
 		if(editor.settings.linkedimg){
 			var link = $("<input>");
@@ -34,7 +32,7 @@ editor.image = {
 	},
 	add: function(){
 		if(!$("#"+editor.image.fileinputID).val()){
-			alert("請選擇要上傳的圖片");
+			editor.alert("請選擇要上傳的圖片", "error");
 			return ;
 		}
 

@@ -9,15 +9,14 @@ editor.video = {
 		editorChild.addClass("editorChild");
 		var link = $("<input>");
 		link.attr("id", "newVideoContent").attr("placeholder", "請貼上影片連結").css("width", "320px");
-		var br = $("<br>");
 
-		editorChild.append(link).append(br);
+		editorChild.append(link).append($("<br>"));
 
 		$(".editorContent").append(editorChild);
 	},
 	add: function(){
 		if(!$("#newVideoContent").val()){
-			alert("請貼上影片連結");
+			editor.alert("請貼上影片連結", "error");
 			return;
 		}
 
@@ -30,7 +29,7 @@ editor.video = {
 			editor.save();
 		}
 		else{
-			alert("不支援此連結");
+			editor.alert("不支援此連結", "error");
 		}
 	},
 	show: function(paragraph){
