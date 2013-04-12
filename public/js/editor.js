@@ -1,5 +1,5 @@
 var editor = {
-	elements: ["paragraph", "image", "video"],
+	elements: ["paragraph", "image", "video", "list"],
 	settings: {
 		articleModel: "article",
 		photoModel: "photo",
