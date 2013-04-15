@@ -93,10 +93,10 @@ editor.list = {
 		cancel.click(function(){
 			editPanel.remove();
 			controlPanel.show();
-			paragraphContainer.children("p:first").show();
+			paragraphContainer.children("ul").show();
 
 			$(".controlPanel a[data-control = edit]").each(function(){
-				editor.paragraph.bindEdit(this);
+				editor.list.bindEdit(this);
 			});
 		});
 
