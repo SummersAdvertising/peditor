@@ -11,6 +11,7 @@ editor.image = {
 		$(".editorList").append(li);
 
 		var editorChild = $("<div>");
+		editorChild.attr("id", "post-img");
 		editorChild.addClass("editorChild");
 
 		var form = $("<form>");
@@ -49,7 +50,7 @@ editor.image = {
 	},
 	show: function(paragraph){
 		var paragraphBox = $("<div>");
-		paragraphBox.addClass("paragraphContainer");
+		paragraphBox.addClass("paragraphContainer part");
 		paragraphBox.attr("data-type", "image");
 
 		var img = $("<img>");
@@ -112,7 +113,7 @@ editor.image = {
 	},
 	bindControl: function(paragraphBox, photoID){
 		var controlPanel = $("<div>");
-		controlPanel.addClass("controlPanel");
+		controlPanel.addClass("controlPanel tool-b");
 
 		var del = $("<a>");
 		del.attr("href", editor.image.photoDestroy+"/"+photoID);

@@ -6,6 +6,7 @@ editor.paragraph = {
 		$(".editorList").append(li);
 
 		var editorChild = $("<div>");
+		editorChild.attr("id", "post-p");
 		editorChild.addClass("editorChild");
 
 		/* 插入選單：class, fontcolor, fontsize */
@@ -85,7 +86,7 @@ editor.paragraph = {
 	},
 	show: function(paragraph){
 		var paragraphBox = $("<div>");
-		paragraphBox.addClass("paragraphContainer");
+		paragraphBox.addClass("paragraphContainer part");
 		paragraphBox.attr("data-type", "paragraph");
 
 		var p = $("<p>");
@@ -122,6 +123,7 @@ editor.paragraph = {
 		});
 
 		var editPanel = $("<div>");
+		editPanel.addClass("editbox");
 		var editContent = paragraphContainer.children("p:first").hide().html();
 
 		var contentLink = editContent.match(/^\<a([\S\s]+)href\=\"([\S\s]+)\"\>(.+)\<\/a\>/);
@@ -177,12 +179,14 @@ editor.paragraph = {
 			
 		});
 
-		editPanel.append(textarea).append($("<br>")).append(contentLink? link : "").append($("<br>")).append(save).append(cancel);
+		var editbtnBar = $("<div>");
+		editbtnBar.addClass("tool-a").append(save).append(cancel);
+		editPanel.append(textarea).append($("<br>")).append(contentLink? $(link).after($("<br>")) : "").append(editbtnBar);
 		paragraphContainer.append(editPanel);
 	},
 	bindControl: function(paragraphBox){
 		var controlPanel = $("<div>");
-		controlPanel.addClass("controlPanel");
+		controlPanel.addClass("controlPanel tool-b");
 
 		var edit = $("<a>");
 		edit.attr("data-control", "edit");

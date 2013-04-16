@@ -6,6 +6,7 @@ editor.video = {
 		$(".editorList").append(li);
 
 		var editorChild = $("<div>");
+		editorChild.attr("id", "post-video");
 		editorChild.addClass("editorChild");
 		var link = $("<input>");
 		link.attr("id", "newVideoContent").attr("placeholder", "請貼上影片連結").css("width", "320px");
@@ -34,7 +35,7 @@ editor.video = {
 	},
 	show: function(paragraph){
 		var paragraphBox = $("<div>");
-		paragraphBox.addClass("paragraphContainer");
+		paragraphBox.addClass("paragraphContainer part");
 		paragraphBox.attr("data-type", "video");
 
 		var iframe = $("<iframe>");
@@ -92,7 +93,7 @@ editor.video = {
 	},
 	bindControl: function(paragraphBox){
 		var controlPanel = $("<div>");
-		controlPanel.addClass("controlPanel");
+		controlPanel.addClass("controlPanel tool-b");
 
 		var del = $("<a>");
 		del.append("刪除");

@@ -6,6 +6,7 @@ editor.list = {
 		$(".editorList").append(li);
 		
 		var editorChild = $("<div>");
+		editorChild.attr("id", "post-list");
 		editorChild.addClass("editorChild");
 		 	
 		var initRows = 3;
@@ -53,7 +54,7 @@ editor.list = {
 	show: function(paragraph){	
 	
 		var paragraphBox = $("<div>");
-		paragraphBox.addClass("paragraphContainer");
+		paragraphBox.addClass("paragraphContainer part");
 		paragraphBox.attr("data-type", "list");
 
 		var ulContainer = $("<ul></ul>");
@@ -145,7 +146,7 @@ editor.list = {
 	},
 	bindControl: function(paragraphBox){
 		var controlPanel = $("<div>");
-		controlPanel.addClass("controlPanel");
+		controlPanel.addClass("controlPanel tool-b");
 
 		var edit = $("<a>");
 		edit.attr("data-control", "edit");

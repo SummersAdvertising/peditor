@@ -8,7 +8,7 @@ var editor = {
 		photoDestroy: "deletePhoto",
 		linkedp: true,
 		linkedimg: true,
-		paragraphFontClass: { "內文": "content", "標題": "title" }, 
+		paragraphFontClass: { "分類": "default", "內文": "content", "標題": "title" }, 
 		paragraphFontColor: { "顏色": "default", "黑色": "#000", "藍色": "#00F" }, 
 		paragraphFontSize: { "大小": "default", 14:14, 28:28 }
 	},
@@ -25,8 +25,8 @@ var editor = {
 		var editorList = $("<ul>");
 		editorList.addClass("editorList");
 
-		var editorContent = $("<div>");
-		editorContent.addClass("editorContent");
+		var editorContent = $("<section>");
+		editorContent.addClass("editorContent post");
 
 		var editorAdd = $("<div>");
 		editorAdd.addClass("editorAdd");
@@ -35,7 +35,8 @@ var editor = {
 		btnAdd.append("新增");
 		editorAdd.append(btnAdd);
 
-		$("#editorPanel").append(editorList).append(editorContent).append(editorAdd);
+		var sectionList = $("<section>").addClass("tab").append(editorList);
+		$("#editorPanel").append(sectionList).append(editorContent).append(editorAdd);
 		
 		for(var index in editor.elements){
 			var element = editor[editor.elements[index]];
