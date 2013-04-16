@@ -19,15 +19,15 @@ editor.paragraph = {
 				for(var child in editor.settings[type]){
 					var option = $("<option>");
 					
-					option.append(editor.settings[type][child]);
+					option.append(child);
 
-					if(child == "default"){
+					if(editor.settings[type][child] == "default"){
 						option.attr("selected", "selected");
 						option.attr("value", "false");
 						select.prepend(option);
 					}
 					else{
-						option.attr("value", child.toString());
+						option.attr("value", editor.settings[type][child].toString());
 						select.append(option);
 					}
 				}
@@ -68,6 +68,9 @@ editor.paragraph = {
 					case "fontSize":
 						paragraph[value] = attrEle.val() + "px";
 					break;
+					case "content":
+						paragraph[value] = editor.HTMLfilter(attrEle.val());
+					break;
 					default:
 						paragraph[value] = attrEle.val();
 					break;
@@ -99,12 +102,12 @@ editor.paragraph = {
 		if(paragraph.link){
 		  var a = $("<a>");
 		  a.attr("target", "_blank").attr("href", paragraph.link);
-		  a.html((paragraph.content).replace(/\\n/g, "<br />"));
+		  a.html(paragraph.content);
 
 		  p.append(a);
 		}
 		else{
-		  p.html((paragraph.content).replace(/\\n/g, "<br />"));
+		  p.html(paragraph.content);
 		}
 
 		paragraphBox.append(p);
@@ -119,7 +122,7 @@ editor.paragraph = {
 		});
 
 		var editPanel = $("<div>");
-		var editContent = paragraphContainer.children("p:first").hide().html().replace(/<br[ \/]*>/g, "\n");
+		var editContent = paragraphContainer.children("p:first").hide().html();
 
 		var contentLink = editContent.match(/^\<a([\S\s]+)href\=\"([\S\s]+)\"\>(.+)\<\/a\>/);
 
@@ -133,7 +136,7 @@ editor.paragraph = {
 		}
 
 		var textarea = $("<textarea>");
-		textarea.val(editContent);
+		textarea.val(editor.HTMLparser(editContent));
 
 		var cancel = $("<a>");
 		cancel.append("取消");
@@ -150,7 +153,7 @@ editor.paragraph = {
 		var save = $("<a>");
 		save.append("完成");
 		save.click(function(){
-			editContent = textarea.val().replace(/\n/g, "<br>");
+			editContent = editor.HTMLfilter(textarea.val());
 			if(editContent){
 				editPanel.remove();
 				controlPanel.show();

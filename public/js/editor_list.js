@@ -37,7 +37,7 @@ editor.list = {
 	  });
 	  
 	  if ( !inputed ) {	  
-			alert("請輸入內容");
+			editor.alert("請輸入內容", "error");
 			return ;
 	  }
 
@@ -135,7 +135,7 @@ editor.list = {
 				});
 			}
 			else{
-				alert("請輸入修改內容");
+				editor.alert("請輸入修改內容", "error");
 			}
 			
 		});
@@ -157,7 +157,7 @@ editor.list = {
 		del.append("刪除");
 		del.click(function(){
 			paragraphBox.remove();
-			editor.save();3
+			editor.save();
 		});
 
 		controlPanel.append(edit).append(del);
@@ -187,7 +187,6 @@ editor.list = {
         list.content = elements;
 
 		list.type = "list";
-console.log(list);
 		return list;
 	}
 };
