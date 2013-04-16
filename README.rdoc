@@ -36,17 +36,17 @@ Peditor是發表文章用的圖文編輯器。
 
 * 建立圖文編輯器UI及功能：
 
-  $(document).ready(function(){ 
-    editor.init();
-    //可以傳入setting參數
-    //例如：editor.init( { articleModel : "news" , photoModel : "newsphoto" } );
-  });
+    $(document).ready(function(){ 
+      editor.init();
+      //可以傳入setting參數
+      //例如：editor.init( { articleModel : "news" , photoModel : "newsphoto" } );
+    });
 
 * Peditor設定值
 
 === 顯示頁面(show)
 * 顯示文章內容內容：
 
-  $(document).ready(function(){
-    editor.show();
-  });
+    $(document).ready(function(){
+      editor.show();
+    });
