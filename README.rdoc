@@ -3,7 +3,7 @@
 Peditor是發表文章用的圖文編輯器。
 
 文章由段落構成，使用者可以直接拖曳段落來調整文章的內容呈現。
-  目前Peditor包含的段落種類有：文字段落、圖片段落、影片段落、清單段落。
+目前Peditor包含的段落種類有：文字段落、圖片段落、影片段落、清單段落。
 
 * 文字段落
 
@@ -51,7 +51,18 @@ Peditor是發表文章用的圖文編輯器。
       //例如：editor.init( { articleModel : "news" , photoModel : "newsphoto" } );
     });
 
-* Peditor設定值
+* Peditor設定及預設值
+    
+    文章model名稱 - articleModel: "article",
+    照片model名稱 - photoModel: "photo",
+    照片model存放路徑欄位 - photoColumn: "image",
+    文章controller中上傳圖片的action - photoUpload: "uploadPhoto",
+    文章controller中刪除圖片的action - photoDestroy: "deletePhoto",
+    是否提供文字段落超連結 - linkedp: true,
+    是否提供圖片段落超連結 - linkedimg: true,
+    文字段落加入分類清單 - paragraphFontClass: { "內文": "content", "標題": "title" },（不生成清單：設定為false）
+    文字段落加入字體色彩清單 - paragraphFontColor: { "顏色": "default", "黑色": "#000", "藍色": "#00F" },（不生成清單：設定為false）
+    文字段落加入字體大小清單 - paragraphFontSize: { "大小": "default", 14:14, 28:28 }（不生成清單：設定為false）
 
 === 顯示頁面(show)
 * 顯示文章內容內容：
