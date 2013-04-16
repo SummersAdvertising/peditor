@@ -3,14 +3,17 @@
 Peditor是發表文章用的圖文編輯器。
 
 文章由段落構成，使用者可以直接拖曳段落來調整文章的內容呈現。
+
 目前Peditor包含的段落種類有：文字段落、圖片段落、影片段落、清單段落。
 
 * 文字段落
 支援段落的<tt>修改</tt>、<tt>刪除</tt>及<tt>增加連結網址</tt>功能讓段落具有超連結效果。
+
 可以視需要加入<tt>字體分類</tt>、<tt>字體顏色</tt>或<tt>字體大小</tt>清單，調整段落的文字樣式。
 
 * 圖片段落
 支援<tt>上傳圖片</tt>至文章內文以及圖片的<tt>刪除</tt>。
+
 圖片可以<tt>增加連結網址</tt>。
 
 * 影片段落
@@ -22,15 +25,15 @@ Peditor是發表文章用的圖文編輯器。
 == 使用說明
 === Gemfile加上需要用到的gem
 * carrierwave
-圖片上傳
+  圖片上傳
 
 * mini_magick
-調整圖片設定值
+  調整圖片設定值
 
 * remotipart
-/app/assets/javascripts/application.js中加入:
+  /app/assets/javascripts/application.js中加入:
 
-  //= require jquery.remotipart
+    //= require jquery.remotipart
 
 === 編輯頁面(edit)
 
