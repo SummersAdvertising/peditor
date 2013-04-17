@@ -34,8 +34,13 @@ editor.video = {
 		}
 	},
 	show: function(paragraph){
-		var paragraphBox = $("<div>");
+		var paragraphBox = this.output(paragraph);
 		paragraphBox.addClass("paragraphContainer part");
+
+		this.bindControl(paragraphBox);
+	},
+	output: function(paragraph){
+		var paragraphBox = $("<div>");
 		paragraphBox.attr("data-type", "video");
 
 		var iframe = $("<iframe>");
@@ -47,7 +52,7 @@ editor.video = {
 		paragraphBox.append(iframe);
 		$("#articleContent").append(paragraphBox);
 
-		this.bindControl(paragraphBox);
+		return paragraphBox;
 	},
 	pack: function(paragraphContainer){
 		var content = $(paragraphContainer).children("iframe:first");
@@ -103,6 +108,7 @@ editor.video = {
 		});
 
 		controlPanel.append(del);
+		console.log(controlPanel);
 		paragraphBox.prepend(controlPanel);
 
 	}

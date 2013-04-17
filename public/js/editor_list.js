@@ -53,8 +53,13 @@ editor.list = {
 	},
 	show: function(paragraph){	
 	
-		var paragraphBox = $("<div>");
+		var paragraphBox = this.output(paragraph);
 		paragraphBox.addClass("paragraphContainer part");
+
+		this.bindControl(paragraphBox);
+	},
+	output: function(paragraph){
+		var paragraphBox = $("<div>");
 		paragraphBox.attr("data-type", "list");
 
 		var ulContainer = $("<ul></ul>");
@@ -67,7 +72,7 @@ editor.list = {
 		  
 		$("#articleContent").append(paragraphBox);
 
-		this.bindControl(paragraphBox);
+		return paragraphBox;
 	},
 	edit: function(paragraphContainer, controlPanel){
 		controlPanel.hide();

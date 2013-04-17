@@ -49,8 +49,13 @@ editor.image = {
 		editor.image.show(image);
 	},
 	show: function(paragraph){
-		var paragraphBox = $("<div>");
+		var paragraphBox = this.output(paragraph);
 		paragraphBox.addClass("paragraphContainer part");
+
+		this.bindControl(paragraphBox, paragraph.id);
+	},
+	output: function(paragraph){
+		var paragraphBox = $("<div>");
 		paragraphBox.attr("data-type", "image");
 
 		var img = $("<img>");
@@ -72,7 +77,7 @@ editor.image = {
 
 		$("#articleContent").append(paragraphBox);
 
-		this.bindControl(paragraphBox, paragraph.id);
+		return paragraphBox;
 	},
 	pack: function(paragraphContainer){
 		var paragraph = new Object();

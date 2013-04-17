@@ -91,6 +91,20 @@ var editor = {
 			}
 		}
 	},
+	output:function(){
+		//read-only
+		var contentEle = $("#"+editor.settings.articleModel+"_content");
+
+		if(contentEle && contentEle.val()){
+			var article = JSON.parse(contentEle.val());
+
+			for(var i = 0, length = article.length; i < length; i++)
+			{
+				var paragraph = article[i];
+				editor[paragraph.type].output(paragraph);
+			}
+		}
+	},
 	resetChild: function(){
 		$(".editorChild.active").find("*").each(function(){
 			switch(this.tagName){

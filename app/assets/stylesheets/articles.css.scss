@@ -1,3 +1,6 @@
-// Place all the styles related to the articles controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+.space { height: 50px; }
+.paragraphContainer { border-width: 1px; border-style: solid; margin: 5px;}
+.editorList { padding-left: 0px;}
+.editorList li{ display: inline-block; padding-left: 5px;}
+.editorContent .editorChild{ display: none;}
+.editorContent .active{ display: block;}

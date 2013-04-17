@@ -85,8 +85,13 @@ editor.paragraph = {
 		editor.save();
 	},
 	show: function(paragraph){
-		var paragraphBox = $("<div>");
+		var paragraphBox = this.output(paragraph);
 		paragraphBox.addClass("paragraphContainer part");
+		
+		this.bindControl(paragraphBox);
+	},
+	output: function(paragraph){
+		var paragraphBox = $("<div>");
 		paragraphBox.attr("data-type", "paragraph");
 
 		var p = $("<p>");
@@ -114,7 +119,7 @@ editor.paragraph = {
 		paragraphBox.append(p);
 		$("#articleContent").append(paragraphBox);
 
-		this.bindControl(paragraphBox);
+		return paragraphBox;
 	},
 	edit: function(paragraphContainer, controlPanel){
 		controlPanel.hide();

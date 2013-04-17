@@ -62,7 +62,6 @@ class ArticlesController < ApplicationController
 
     respond_to do |format|
       if @photo.save
-        format.html { redirect_to photos.path } #index.html.erb
         format.json { render json: @photo, status: :created, location: @photo }
         format.js
       else

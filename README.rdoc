@@ -27,6 +27,11 @@ Peditor是發表文章用的圖文編輯器。
   可以在文章中<tt>新增<ul>清單</tt>。支援清單<tt>子項目<li>的修改</tt>及<tt>刪除</tt>。
 
 == 使用說明
+=== 段落拖曳排序
+需要jquery-ui的sortable功能
+
+    <script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
+
 === Gemfile加上需要用到的gem
 * carrierwave
 
