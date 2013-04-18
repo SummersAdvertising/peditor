@@ -29,7 +29,7 @@ var editor = {
 		});
 
 		var editorList = $("<ul>");
-		editorList.addClass("editorList");
+		editorList.addClass("editorList x2");
 
 		var editorContent = $("<section>");
 		editorContent.addClass("editorContent post");
