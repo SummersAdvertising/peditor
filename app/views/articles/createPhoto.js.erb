@@ -9,10 +9,9 @@ if("<%= @photo.id %>"){
 	}
 
 	editor.resetChild();
-
 	editor.image.update(image);
 	
 }
 else{
-	alert("已經上傳過同樣名稱的圖片");
+	editor.alert("已經上傳過同樣名稱的圖片", "error");
 }

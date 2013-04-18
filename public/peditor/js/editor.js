@@ -8,12 +8,14 @@ var editor = {
 		photoDestroy: "deletePhoto",
 		linkedp: true,
 		linkedimg: true,
-		paragraphFontClass: { "內文": "content", "標題": "title" }, 
+		paragraphFontClass: { "內文": "a-content", "標題": "a-title" }, 
 		paragraphFontColor: { "顏色": "default", "黑色": "#000", "藍色": "#00F" }, 
 		paragraphFontSize: { "大小": "default", 14:14, 28:28 }
 	},
 	init: function(settings){
-		editor.settings = settings? editor.setEditor(editor.settings, settings) : editor.settings;
+		if(settings){
+			editor.setEditor(settings);
+		}
 
 		$("#articleContent").addClass("sortable");
 		$( ".sortable" ).sortable({
@@ -119,11 +121,10 @@ var editor = {
 			}
 		});
 	},
-	setEditor: function(defaultSet, customSet){
-		for(setting in customSet){
-			defaultSet[setting] = customSet[setting];
+	setEditor: function(settings){
+		for(setting in settings){
+			this.settings[setting] = settings[setting];
 		}
-		return defaultSet;
 	},
 	bindPanelControl: function(){
 		$(".editorList li:first, .editorContent .editorChild:first").addClass("active");
@@ -156,11 +157,12 @@ var editor = {
 				'"': 'quot',
 				'<': 'lt',
 				'>': 'gt',
-				'&': 'amp'
+				'&': 'amp',
+				' ': 'nbsp'
 			}[all] + ";";
 		}).replace(/\n/g, "<br>");
 	},
 	HTMLparser: function(text){
-		return text.replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&').replace(/<br[ \/]*>/g, "\n");
+		return text.replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&').replace(/&nbsp;/g, ' ').replace(/<br[ \/]*>/g, "\n");
 	}
 };
