@@ -70,7 +70,7 @@ editor.list = {
 		  $("<li>" + element + "</li>").appendTo(ulContainer);			  
 		}
 		  
-		$("#articleContent").append(paragraphBox);
+		editor.settings.articleSection.append(paragraphBox);
 
 		return paragraphBox;
 	},

@@ -75,7 +75,7 @@ editor.image = {
 			paragraphBox.append(img);
 		}
 
-		$("#articleContent").append(paragraphBox);
+		editor.settings.articleSection.append(paragraphBox);
 
 		return paragraphBox;
 	},

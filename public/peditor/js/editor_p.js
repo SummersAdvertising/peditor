@@ -117,7 +117,7 @@ editor.paragraph = {
 		}
 
 		paragraphBox.append(p);
-		$("#articleContent").append(paragraphBox);
+		editor.settings.articleSection.append(paragraphBox);
 
 		return paragraphBox;
 	},

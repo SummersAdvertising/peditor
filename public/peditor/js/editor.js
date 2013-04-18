@@ -6,6 +6,8 @@ var editor = {
 		photoColumn: "image",
 		photoUpload: "uploadPhoto",
 		photoDestroy: "deletePhoto",
+		articleSection: "#articleContent",
+
 		linkedp: true,
 		linkedimg: true,
 		paragraphFontClass: { "內文": "a-content", "標題": "a-title" }, 
@@ -16,8 +18,10 @@ var editor = {
 		if(settings){
 			editor.setEditor(settings);
 		}
+		this.settings.articleSection = $(editor.settings.articleSection);
+		this.settings.articleContent = $("#"+this.settings.articleModel+"_content").val();
 
-		$("#articleContent").addClass("sortable");
+		this.settings.articleSection.addClass("sortable");
 		$( ".sortable" ).sortable({
 			placeholder: "space",
 			disable: true,
@@ -81,30 +85,26 @@ var editor = {
 		editor.save(editor.ajaxupdate);
 	},
 	show: function(){
-		var contentEle = $("#"+editor.settings.articleModel+"_content");
-
-		if(contentEle && contentEle.val()){
-			var article = JSON.parse(contentEle.val());
-
-			for(var i = 0, length = article.length; i < length; i++)
-			{
-				var paragraph = article[i];
-				editor[paragraph.type].show(paragraph);
-			}
+		var article = JSON.parse(this.settings.articleContent);
+		for(var i = 0, length = article.length; i < length; i++)
+		{
+			var paragraph = article[i];
+			editor[paragraph.type].show(paragraph);
 		}
 	},
-	output:function(){
+	output:function(content, articleSection){
 		//read-only
-		var contentEle = $("#"+editor.settings.articleModel+"_content");
+		if(articleSection){
+			this.settings.articleSection = articleSection;
+		}
 
-		if(contentEle && contentEle.val()){
-			var article = JSON.parse(contentEle.val());
+		var content = content? content : this.settings.articleContent;
 
-			for(var i = 0, length = article.length; i < length; i++)
-			{
-				var paragraph = article[i];
-				editor[paragraph.type].output(paragraph);
-			}
+		var article = JSON.parse(content);
+		for(var i = 0, length = article.length; i < length; i++)
+		{
+			var paragraph = article[i];
+			editor[paragraph.type].output(paragraph);
 		}
 	},
 	resetChild: function(){

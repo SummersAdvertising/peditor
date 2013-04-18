@@ -50,7 +50,7 @@ editor.video = {
 		iframe.attr("src", paragraph.embedcode);
 
 		paragraphBox.append(iframe);
-		$("#articleContent").append(paragraphBox);
+		editor.settings.articleSection.append(paragraphBox);
 
 		return paragraphBox;
 	},
