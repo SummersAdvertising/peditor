@@ -2,7 +2,11 @@ editor.video = {
 	init: function(){
 		var li = $("<li>");
 		li.attr("data-type", "video");
-		li.append("插入影片");
+		var a = $("<a>").append("插入影片");
+		var icon = $("<img>").attr("src", "/peditor/img/video.png");
+		a.prepend(icon);
+
+		li.append(a);
 		$(".editorList").append(li);
 
 		var editorChild = $("<div>");

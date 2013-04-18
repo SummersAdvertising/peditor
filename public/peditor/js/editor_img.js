@@ -7,7 +7,11 @@ editor.image = {
 	init: function(){
 		var li = $("<li>");
 		li.attr("data-type", "image");
-		li.append("插入圖片");
+		var a = $("<a>").append("插入圖片");
+		var icon = $("<img>").attr("src", "/peditor/img/img.png");
+		a.prepend(icon);
+
+		li.append(a);
 		$(".editorList").append(li);
 
 		var editorChild = $("<div>");

@@ -2,7 +2,11 @@ editor.list = {
 	init: function(){
 		var li = $("<li>");
 		li.attr("data-type", "list");
-		li.append("插入清單");
+		var a = $("<a>").append("插入清單");
+		var icon = $("<img>").attr("src", "/peditor/img/list.png");
+		a.prepend(icon);
+
+		li.append(a);
 		$(".editorList").append(li);
 		
 		var editorChild = $("<div>");

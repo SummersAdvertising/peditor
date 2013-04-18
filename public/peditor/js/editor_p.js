@@ -2,7 +2,12 @@ editor.paragraph = {
 	init: function(){
 		var li = $("<li>");
 		li.attr("data-type", "paragraph");
-		li.append("插入段落");
+		var a = $("<a>").append("插入段落");
+		var icon = $("<img>").attr("src", "/peditor/img/edit.png");
+		a.prepend(icon);
+
+		li.append(a);
+
 		$(".editorList").append(li);
 
 		var editorChild = $("<div>");
@@ -42,6 +47,7 @@ editor.paragraph = {
 		}
 
 		var text = $("<textarea>");
+		text.addClass("autogrow");
 		text.attr("id", "newParagraphContent").attr("placeholder", "請將段落輸入在此處").attr("cols", "50").attr("rows", "8");
 
 		editorChild.append(text).append($("<br>"));
@@ -143,6 +149,7 @@ editor.paragraph = {
 		}
 
 		var textarea = $("<textarea>");
+		textarea.addClass("autogrow");
 		textarea.val(editor.HTMLparser(editContent));
 
 		var cancel = $("<a>");

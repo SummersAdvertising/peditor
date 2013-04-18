@@ -18,10 +18,10 @@ var editor = {
 		if(settings){
 			editor.setEditor(settings);
 		}
-		this.settings.articleSection = $(editor.settings.articleSection);
-		this.settings.articleContent = $("#"+this.settings.articleModel+"_content").val();
 
-		this.settings.articleSection.addClass("sortable");
+		editor.settings.articleSection = $(editor.settings.articleSection);
+
+		editor.settings.articleSection.addClass("sortable");
 		$( ".sortable" ).sortable({
 			placeholder: "space",
 			disable: true,
@@ -34,11 +34,13 @@ var editor = {
 		var editorContent = $("<section>");
 		editorContent.addClass("editorContent post");
 
-		var editorAdd = $("<div>");
-		editorAdd.addClass("editorAdd");
+		var editorAdd = $("<section>");
+		editorAdd.addClass("editorAdd button");
 		var btnAdd = $("<a>");
 		btnAdd.attr("href", "#");
-		btnAdd.append("新增");
+		var icon = $("<img>").attr("src", "/peditor/img/add.png");
+		btnAdd.append(icon).append("新增");
+
 		editorAdd.append(btnAdd);
 
 		var sectionList = $("<section>").addClass("tab").append(editorList);
@@ -72,7 +74,7 @@ var editor = {
 	},
 	pack: function(upload){
 		var article = new Array();
-		$("#articleContent .paragraphContainer").each(function(){
+		editor.settings.articleSection.children("div.paragraphContainer").each(function(){
 			article.push(editor[$(this).data("type")].pack(this));
 		});
 
@@ -85,7 +87,9 @@ var editor = {
 		editor.save(editor.ajaxupdate);
 	},
 	show: function(){
-		var article = JSON.parse(this.settings.articleContent);
+		var content = $("#"+editor.settings.articleModel+"_content").val();
+
+		var article = JSON.parse(content);
 		for(var i = 0, length = article.length; i < length; i++)
 		{
 			var paragraph = article[i];
@@ -95,10 +99,13 @@ var editor = {
 	output:function(content, articleSection){
 		//read-only
 		if(articleSection){
-			this.settings.articleSection = articleSection;
+			editor.settings.articleSection = articleSection;
+		}
+		else{
+			editor.settings.articleSection = $(editor.settings.articleSection);
 		}
 
-		var content = content? content : this.settings.articleContent;
+		var content = content? content : $("#"+editor.settings.articleModel+"_content").val();
 
 		var article = JSON.parse(content);
 		for(var i = 0, length = article.length; i < length; i++)
@@ -123,7 +130,7 @@ var editor = {
 	},
 	setEditor: function(settings){
 		for(setting in settings){
-			this.settings[setting] = settings[setting];
+			editor.settings[setting] = settings[setting];
 		}
 	},
 	bindPanelControl: function(){

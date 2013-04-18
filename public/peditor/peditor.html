@@ -1,0 +1,82 @@
+<div id="editorPanel">
+	<section class="tab">
+		<ul class="editorList">
+			<li data-type="paragraph" class=""><a><img src="/peditor/img/edit.png">插入段落</a></li>
+			<li data-type="image" class=""><a><img src="/peditor/img/img.png">插入圖片</a></li>
+			<li data-type="video" class=""><a><img src="/peditor/img/video.png">插入影片</a></li>
+			<li data-type="list" class="active"><a><img src="/peditor/img/list.png">插入清單</a></li>
+		</ul>
+	</section>
+
+	<section class="editorContent post">
+		<div id="post-p" class="editorChild active">
+			<select id="newParagraphFontClass">
+				<option value="a-content">內文</option>
+				<option value="a-title">標題</option>
+			</select>
+			<select id="newParagraphFontColor">
+				<option selected="selected" value="false">顏色</option>
+				<option value="#000">黑色</option>
+				<option value="#00F">藍色</option>
+			</select>
+			<select id="newParagraphFontSize">
+				<option selected="selected" value="false">大小</option>
+				<option value="14">14</option>
+				<option value="28">28</option>
+			</select>
+
+			<br>
+
+			<textarea id="newParagraphContent" placeholder="請將段落輸入在此處" cols="50" rows="8" class="autogrow"></textarea>
+			<br>
+			<input type="text" id="newParagraphLink" placeholder="此段落連結至何處（若無請勿輸入）" size="80">
+		</div>
+
+		<div id="post-img" class="editorChild">
+			<form accept-charset="UTF-8" action="uploadPhoto" data-remote="true" enctype="multipart/form-data" id="new_photo" method="post">
+				<input id="photo_image" name="photo[image]" type="file"><br>
+				<input type="text" id="newImageLink" placeholder="此段落連結至何處（若無請勿輸入）" size="80">
+			</form>
+		</div>
+
+		<div id="post-video" class="editorChild">
+			<input id="newVideoContent" placeholder="請貼上影片連結" style="width: 320px;"><br>
+		</div>
+
+		<div id="post-list" class="editorChild">
+			<ul id="newListContent">
+				<li><input type="text" class="listElement autogrow"></li>
+				<li><input type="text" class="listElement autogrow"></li>
+				<li><input type="text" class="listElement autogrow"></li>
+			</ul>
+		</div>
+	</section>
+
+	<section class="editorAdd button">
+		<a href="#"><img src="images/add.png">新增</a>
+	</section>
+</div>
+
+<input id="article_content" name="article[content]" size="30" style="width: 80%; " type="text">
+<section id="articleContent" class="sortable ui-sortable">
+	<div data-type="paragraph" class="paragraphContainer part">
+		<div class="controlPanel tool-b">
+			<a data-control="edit">編輯</a><a data-control="del">刪除</a>
+		</div>
+		<p class="a-content">這是一段測試文字</p>
+	</div>
+	<div data-type="paragraph" class="paragraphContainer part">
+		<div class="controlPanel tool-b" style="display: none;">
+			<a data-control="edit">編輯</a><a data-control="del">刪除</a>
+		</div>
+		<p class="a-content" style="display: none;">這是一段編輯狀態的測試文字</p>
+
+		<div class="editbox">
+			<textarea class="autogrow"></textarea><br>
+			<div class="tool-a"><a>完成</a><a>取消</a></div>
+		</div>
+	</div>
+</section>
+<div class="actions">
+  <input name="commit" type="submit" value="save article">
+</div>
