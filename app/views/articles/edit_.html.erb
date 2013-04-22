@@ -1,0 +1,70 @@
+<header _height="none">
+  <section id="top"> <a id="nav-ctrl"><img src="/images/nav.png"></a>
+    <div class="left">
+      <h1><a href="#">漢杰後台管理系統</a></h1>
+    </div>
+    <!--left-->
+    <aside> <a id="aside-ctrl"><img src="/images/set.png"></a>
+      <div id="aside-box"> <a href="#">修改個人資料</a> <a href="#">登出</a> <a href="#">返回首頁</a> </div>
+    </aside>
+  </section>
+  <!--top--> 
+</header>
+<section id="main" _height="auto">
+  <nav>
+    <ul>
+      <li class="active"><a href="#" id="nav-1">最新消息</a></li>
+      <li><a href="#" id="nav-2">弱點通報</a></li>
+      <li><a href="#" id="nav-3">漢杰活動</a></li>
+      <li><a href="#" id="nav-4">使用者管理</a></li>
+    </ul>
+  </nav>
+  <article>
+    <section class="title">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <th>發佈日期</th>
+          <td><input name="" type="text" placeholder="請選擇日期" /></td>
+        </tr>
+      </table>
+    </section>
+    <!--title-->
+    <section class="title">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <th>文章標題</th>
+          <td><input name="" type="text" placeholder="請輸入文章標題"/></td>
+        </tr>
+      </table>
+    </section>
+    <!--title-->
+    <section class="tab">
+      <ul class="editorList x2">
+        <li data-type="p" id="tab-p"><a href="#post-p"><img src="/peditor/img/edit.png">插入段落</a></li>
+        <li data-type="list" id="tab-list"><a href="#post-list"><img src="/peditor/img/list.png"/>插入清單</a></li>
+      </ul>
+    </section>
+    <!--tab-->
+    
+    <section class="button"> <a href="#"><img src="/peditor/img/add.png">新增</a> </section>
+    <!--button-->
+    <section class="hgroup">
+      <h2>文章預覽</h2>
+    </section>
+    <!--hgroup-->
+    <section class="preview" id="editorPanel">
+    </section>
+    <!--text-->
+    <section class="button"> <a href="category-show.html"><img src="/images/check.png">完成</a></section>
+    <!--button--> 
+  </article>
+</section>
+
+<!--main-->
+<footer _height="none"> Copyright © <a href="http://www.summers.com.tw/" target="_blank">Summers</a> </footer>
+
+<script type="text/javascript">
+$(document).ready(function(){
+  editor.init();
+});
+</script>

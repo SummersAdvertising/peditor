@@ -1,0 +1,48 @@
+/*-----------------------------------------------------------------------頁首---*/
+
+#nav-ctrl,#aside-ctrl{display:none}
+
+#top .left{float:left;width:50%}
+h1{margin:0 15px 0 0}
+
+aside{float:right;text-align:right;width:50%;padding:8px 0 0 0}
+
+#aside-box a{border:1px solid #2B4680;border-radius:5px;background:#4B67A1;text-align:center;padding:5px 10px;height:30px;margin-left:5px;font-size:1em}
+#aside-box a:hover{background:#2B4680}
+
+/*-----------------------------------------------------------------------內容---*/
+
+#main{padding:10px}
+
+article{float:right;padding:10px;width:86%;border-radius:5px;}
+article section{margin:0 0 10px 0}
+
+/*-----------------------------------------------------------------------側欄---*/
+
+nav{float:left;width:14%;text-align:center;position:relative;z-index:3;left:1px}
+nav li{height:100px}
+nav li a{background-position:center 20px;border-radius:5px 0 0 5px;
+color:#777;text-shadow:0 1px 0 #fff;padding:62px 0 0 0}
+nav li a:hover{background-color:rgba(255,255,255,.5)}
+nav .active a{background-color:#fff;color:#152529!important;text-shadow:0 1px 0 #eee!important;border:1px solid #C4CDE0;border-right:1px solid #fff!important}
+nav .active:hover a{background-color:#fff}
+
+/*-----------------------------------------------------------------------列表---*/
+
+.list .x2{width:18%}
+.list .x1{width:9%}
+
+/*-----------------------------------------------------------------------欄位---*/
+
+.text .quarter{width:33%}
+.text .remainder{width:67%}
+.text .three{width:50%}
+.text .half{width:50%}
+
+/*-----------------------------------------------------------------------頁腳---*/
+
+footer{text-align:center;padding:0px 0 10px 14%}
+
+/*-----------------------------------------------------------------------登入---*/
+
+.login article{width:80%;padding:20px;height:210px}

@@ -129,6 +129,7 @@ var editor = {
 	pack: function(upload){
 		var article = new Array();
 		editor.settings.articleSection.children("div.paragraphContainer").each(function(){
+			console.log($(this));
 			article.push(editor[$(this).data("type")].pack(this));
 		});
 

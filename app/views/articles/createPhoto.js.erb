@@ -1,15 +1,15 @@
-if("<%= @photo.id %>"){
+if(<%= @photo.id.to_s.html_safe %>){
 	var image = new Object();
-	image.type = "image";
-	image.id = "<%= @photo.id %>";
-	image.path = "<%= @photo.image %>";
+	image.type = "img";
+	image.id = "<%= @photo.id.to_s.html_safe %>";
+	image.path = "<%= @photo.image.to_s.html_safe %>";
 	
 	if($("#newImageLink").val()){
 		image.link = $("#newImageLink").val();
 	}
 
 	editor.resetChild();
-	editor.image.update(image);
+	editor.img.update(image);
 	
 }
 else{

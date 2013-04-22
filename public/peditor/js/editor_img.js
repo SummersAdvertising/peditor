@@ -61,7 +61,7 @@ editor.img = {
 	},
 	output: function(paragraph){
 		var paragraphBox = $("<div>");
-		paragraphBox.attr("data-type", "image");
+		paragraphBox.attr("data-type", "img");
 
 		var img = $("<img>");
 		img.attr("alt", paragraph.id);
@@ -91,7 +91,7 @@ editor.img = {
 			paragraph.link = content.parent("a").attr("href");
 		}
 
-		paragraph.type = "image";
+		paragraph.type = "img";
 		paragraph.id = $(content).attr("alt");
 		paragraph.path = $(content).attr("src");
 

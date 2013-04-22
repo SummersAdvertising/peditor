@@ -86,7 +86,7 @@ editor.p = {
 			}
 		});
 
-		editor.paragraph.show(paragraph);
+		editor.p.show(paragraph);
 		editor.resetChild();
 
 		editor.save();
@@ -99,7 +99,7 @@ editor.p = {
 	},
 	output: function(paragraph){
 		var paragraphBox = $("<div>");
-		paragraphBox.attr("data-type", "paragraph");
+		paragraphBox.attr("data-type", "p");
 
 		var p = $("<p>");
 		if(paragraph.fontSize){
@@ -161,7 +161,7 @@ editor.p = {
 			paragraphContainer.children("p:first").show();
 
 			$(".controlPanel a[data-control = edit]").each(function(){
-				editor.paragraph.bindEdit(this);
+				editor.p.bindEdit(this);
 			});
 		});
 
@@ -183,7 +183,7 @@ editor.p = {
 				editor.save();
 
 				$(".controlPanel a[data-control = edit]").each(function(){
-					editor.paragraph.bindEdit(this);
+					editor.p.bindEdit(this);
 				});
 			}
 			else{
@@ -204,7 +204,7 @@ editor.p = {
 		var edit = $("<a>");
 		edit.attr("data-control", "edit");
 		edit.append("編輯");
-		editor.paragraph.bindEdit(edit);
+		editor.p.bindEdit(edit);
 
 		var del = $("<a>");
 		del.attr("data-control", "del");
@@ -222,14 +222,14 @@ editor.p = {
 		$(edit).bind("click", function(){
 			var controlPanel = $(this).parents(".controlPanel");
 			var paragraphContainer = $(this).parents(".paragraphContainer");
-			editor.paragraph.edit(paragraphContainer, controlPanel);
+			editor.p.edit(paragraphContainer, controlPanel);
 		});
 	},
 	pack: function(paragraphContainer){
 		var paragraph = new Object();
 		var content = $(paragraphContainer).children("p:first");
 
-		paragraph.type = "paragraph";
+		paragraph.type = "p";
         paragraph.fontColor = content.data('fontcolor');
         paragraph.fontSize = content.data('fontsize');
         paragraph.fontClass = content.attr("class");
