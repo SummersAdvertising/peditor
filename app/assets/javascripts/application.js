@@ -14,4 +14,5 @@
 //= require jquery_ujs
 //= require jquery.form
 //= require jquery.remotipart
+//= require jquery.ui.sortable
 //= require_tree .

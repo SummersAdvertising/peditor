@@ -23,6 +23,12 @@ editor.list = {
 		
 		editorChild.append(container);
 
+		$('<div class="addlist"></div>').append(
+			$('<a href="javascript: void(0);">增加</a>').click(function() {
+				container.append('<li><input type="text" class="listElement autogrow" /></li>');
+			})
+		).appendTo(editorChild);
+
 		$(".editorContent").append(editorChild);
 	},
 	add: function(){
