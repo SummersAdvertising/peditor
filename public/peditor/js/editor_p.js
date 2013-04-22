@@ -1,7 +1,7 @@
-editor.paragraph = {
-	init: function(){
+editor.p = {
+	initTab: function(){
 		var li = $("<li>");
-		li.attr("data-type", "paragraph");
+		li.attr("data-type", "p").attr("id", "tab-p");
 		var a = $("<a>").append("插入段落");
 		var icon = $("<img>").attr("src", "/peditor/img/edit.png");
 		a.prepend(icon);
@@ -9,7 +9,8 @@ editor.paragraph = {
 		li.append(a);
 
 		$(".editorList").append(li);
-
+	},
+	initPost: function(){
 		var editorChild = $("<div>");
 		editorChild.attr("id", "post-p");
 		editorChild.addClass("editorChild");

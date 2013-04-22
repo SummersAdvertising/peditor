@@ -1,5 +1,5 @@
 var editor = {
-	elements: ["paragraph", "image", "video", "list"],
+	elements: ["p", "img", "video", "list"],
 	settings: {
 		articleModel: "article",
 		photoModel: "photo",
@@ -28,30 +28,84 @@ var editor = {
 			stop: function( event, ui ) {editor.save();}
 		});
 
-		var editorList = $("<ul>");
-		editorList.addClass("editorList x2");
+		//段落選單
+		if($(".tab").length > 0){
+			//bind自訂選單
+			var sectionList = $(".tab");
+			$("#editorPanel").append(sectionList);
+		}
+		else{
+			//插入預設選單
+			var editorList = $("<ul>");
+			editorList.addClass("editorList x2");
 
-		var editorContent = $("<section>");
-		editorContent.addClass("editorContent post");
+			var sectionList = $("<section>").addClass("tab").append(editorList);
+			$("#editorPanel").append(sectionList);
 
-		var editorAdd = $("<section>");
-		editorAdd.addClass("editorAdd button");
-		var btnAdd = $("<a>");
-		btnAdd.attr("href", "#");
-		var icon = $("<img>").attr("src", "/peditor/img/add.png");
-		btnAdd.append(icon).append("新增");
+			for(var index in editor.elements){
+				var element = editor[editor.elements[index]];
+				if(element){
+					element.initTab();
+				}
+			}
+			
+		}
 
-		editorAdd.append(btnAdd);
+		//選單內容
+		if($(".post").length > 0){
+			//使用自訂的editorContent
+			var editorContent = $(".post");
+			editorContent.addClass("editorContent");
+			$("#editorPanel").append(editorContent);
 
-		var sectionList = $("<section>").addClass("tab").append(editorList);
-		$("#editorPanel").append(sectionList).append(editorContent).append(editorAdd);
-		
-		for(var index in editor.elements){
-			var element = editor[editor.elements[index]];
-			if(element){
-				element.init();
+			$.each(editor.elements, function(index, value){
+				var tab = $("#tab-"+value);
+				if(tab.length > 0){
+					var editorChild =  editorContent.children("#post-"+value);
+					if(editorChild.length > 0 && !editorChild.hasClass("editorChild") ){
+						editorChild.addClass("editorChild");
+						$(".editorContent").append(editorChild);
+					}
+					else if(editorChild.length > 0 && editorChild.hasClass("editorChild") ){
+						$(".editorContent").append(editorChild);
+					}
+					else if(editorChild.length == 0){
+						editor[value].initPost();
+					}
+				}
+				
+			});
+		}
+		else{
+			//插入預設editorContent
+			var editorContent = $("<section>");
+			editorContent.addClass("editorContent post");
+			$("#editorPanel").append(editorContent);
+
+			for(var index in editor.elements){
+				var element = editor[editor.elements[index]];
+				if(element){
+					element.initPost();
+				}
 			}
 		}
+		
+
+		if($(".button").length > 0){
+			var editorAdd = $(".button");
+		}
+		else{
+			var editorAdd = $("<section>");
+			editorAdd.addClass("editorAdd button");
+			var btnAdd = $("<a>");
+			btnAdd.attr("href", "#");
+			var icon = $("<img>").attr("src", "/peditor/img/add.png");
+			btnAdd.append(icon).append("新增");
+
+			editorAdd.append(btnAdd);
+		}
+		$("#editorPanel").append(editorAdd);
+		
 
 		editor.bindPanelControl();
 		editor.show();
@@ -134,20 +188,31 @@ var editor = {
 		}
 	},
 	bindPanelControl: function(){
-		$(".editorList li:first, .editorContent .editorChild:first").addClass("active");
-
-		$(".editorList li").click(function(event){
-			event.preventDefault();
-			$(".editorList .active, .editorContent .active").removeClass("active");
-			$(this).addClass("active");
-
-			var indexActive = $(".editorList li").index(this);
-			$(".editorContent .editorChild").eq(indexActive).addClass("active");
+		var listBtns = new String();
+		var listChildren = new String();
+		
+		$.each(editor.elements, function(index, value){
+			listBtns += "#tab-" + value + (index == editor.elements.length-1? "": ", ");
+			listChildren += "#post-" + value + (index == editor.elements.length-1? "": ", ");
 		});
 
-		$(".editorAdd").click(function(){
-			var element = $(".editorList .active").data("type");
+		$($(listChildren)[0]).addClass("active");
+		$($(listBtns)[0]).addClass("active");
+		
+		$(listBtns).click(function(event){
+			$(listBtns+", "+listChildren).removeClass("active");
+			$(this).addClass("active");
+
+			$("#post-" + $(this).data("type")).addClass("active");
+
+			event.preventDefault();
+		});
+
+		$(".editorAdd").click(function(event){
+			var element = $(".tab").find(".active").data("type");
 			editor[element].add();
+
+			event.preventDefault();
 		});
 	},
 	alert: function(alertMsg, type){

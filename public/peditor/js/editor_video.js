@@ -1,14 +1,15 @@
 editor.video = {
-	init: function(){
+	initTab: function(){
 		var li = $("<li>");
-		li.attr("data-type", "video");
+		li.attr("data-type", "video").attr("id", "tab-video");
 		var a = $("<a>").append("插入影片");
 		var icon = $("<img>").attr("src", "/peditor/img/video.png");
 		a.prepend(icon);
 
 		li.append(a);
 		$(".editorList").append(li);
-
+	},
+	initPost: function(){
 		var editorChild = $("<div>");
 		editorChild.attr("id", "post-video");
 		editorChild.addClass("editorChild");
@@ -112,7 +113,6 @@ editor.video = {
 		});
 
 		controlPanel.append(del);
-		console.log(controlPanel);
 		paragraphBox.prepend(controlPanel);
 
 	}

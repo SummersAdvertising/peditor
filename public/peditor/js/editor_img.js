@@ -1,28 +1,29 @@
-editor.image = {
+editor.img = {
 	photoModel: editor.settings.photoModel,
 	fileinputID: editor.settings.photoModel + "_" + editor.settings.photoColumn,
 	fileinputName: editor.settings.photoModel + "[" + editor.settings.photoColumn + "]",
 	photoUpload: editor.settings.photoUpload,
 	photoDestroy: editor.settings.photoDestroy,
-	init: function(){
+	initTab: function(){
 		var li = $("<li>");
-		li.attr("data-type", "image");
+		li.attr("data-type", "img").attr("id", "tab-img");
 		var a = $("<a>").append("插入圖片");
 		var icon = $("<img>").attr("src", "/peditor/img/img.png");
 		a.prepend(icon);
 
 		li.append(a);
 		$(".editorList").append(li);
-
+	},
+	initPost: function(){
 		var editorChild = $("<div>");
 		editorChild.attr("id", "post-img");
 		editorChild.addClass("editorChild");
 
 		var form = $("<form>");
-		form.attr("accept-charset", "UTF-8").attr("action", editor.image.photoUpload).attr("data-remote", "true").attr("enctype", "multipart/form-data").attr("id", "new_"+editor.image.photoModel).attr("method", "post");
+		form.attr("accept-charset", "UTF-8").attr("action", editor.img.photoUpload).attr("data-remote", "true").attr("enctype", "multipart/form-data").attr("id", "new_"+editor.img.photoModel).attr("method", "post");
 		
 		var input = $("<input>");
-		input.attr("id", editor.image.fileinputID).attr("name", editor.image.fileinputName).attr("type", "file");
+		input.attr("id", editor.img.fileinputID).attr("name", editor.img.fileinputName).attr("type", "file");
 
 		form.append(input).append($("<br>"));
 
@@ -36,21 +37,21 @@ editor.image = {
 		$(".editorContent").append(editorChild);
 	},
 	add: function(){
-		if(!$("#"+editor.image.fileinputID).val()){
+		if(!$("#"+editor.img.fileinputID).val()){
 			editor.alert("請選擇要上傳的圖片", "error");
 			return ;
 		}
 
-		if(editor.image.validate()){
-			$("#new_" + editor.image.photoModel).submit();
+		if(editor.img.validate()){
+			$("#new_" + editor.img.photoModel).submit();
 			
 		}
-		$("#"+editor.image.fileinputID).val("");
+		$("#"+editor.img.fileinputID).val("");
 
 	},
 	update: function(image){
 		editor.pack(image);
-		editor.image.show(image);
+		editor.img.show(image);
 	},
 	show: function(paragraph){
 		var paragraphBox = this.output(paragraph);
@@ -100,7 +101,7 @@ editor.image = {
 		//validate image upload
 		var isSubmit = false;
 
-		var fileinput = document.getElementById(editor.image.fileinputID);
+		var fileinput = document.getElementById(editor.img.fileinputID);
 		if(fileinput.files[0]){
 			var typeAllowed = ["gif", "png", "jpg", "jpeg"];
 			(function() {
@@ -125,7 +126,7 @@ editor.image = {
 		controlPanel.addClass("controlPanel tool-b");
 
 		var del = $("<a>");
-		del.attr("href", editor.image.photoDestroy+"/"+photoID);
+		del.attr("href", editor.img.photoDestroy+"/"+photoID);
 		del.attr("data-method", "delete");
 		del.attr("data-remote", "true");
 		del.append("刪除");

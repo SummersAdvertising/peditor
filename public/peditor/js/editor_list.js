@@ -1,14 +1,15 @@
 editor.list = {
-	init: function(){
+	initTab: function(){
 		var li = $("<li>");
-		li.attr("data-type", "list");
+		li.attr("data-type", "list").attr("id", "tab-list");
 		var a = $("<a>").append("插入清單");
 		var icon = $("<img>").attr("src", "/peditor/img/list.png");
 		a.prepend(icon);
 
 		li.append(a);
 		$(".editorList").append(li);
-		
+	},
+	initPost: function(){		
 		var editorChild = $("<div>");
 		editorChild.attr("id", "post-list");
 		editorChild.addClass("editorChild");
