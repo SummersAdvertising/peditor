@@ -2,18 +2,18 @@
 <div id="editorPanel">
 	<section class="tab">
 		<ul class="editorList x2">
-			<li data-type="p" class="active"><a><img src="/peditor/img/edit.png">插入段落</a></li>
-			<li data-type="img"><a><img src="/peditor/img/img.png">插入圖片</a></li>
-			<li data-type="video"><a><img src="/peditor/img/video.png">插入影片</a></li>
-			<li data-type="list"><a><img src="/peditor/img/list.png">插入清單</a></li>
+			<li data-type="p" id="tab-p" class="active"><a><img src="/peditor/img/edit.png">插入段落</a></li>
+			<li data-type="img" id="tab-img"><a><img src="/peditor/img/img.png">插入圖片</a></li>
+			<li data-type="video" id="tab-video"><a><img src="/peditor/img/video.png">插入影片</a></li>
+			<li data-type="list" id="tab-list"><a><img src="/peditor/img/list.png">插入清單</a></li>
 		</ul>
 	</section>
 
 	<section class="editorContent post">
 		<div id="post-p" class="editorChild active">
 			<select id="newParagraphFontClass">
-				<option value="a-content">內文</option>
-				<option value="a-title">標題</option>
+				<option value="part-content">內文</option>
+				<option value="part-title">標題</option>
 			</select>
 			<select id="newParagraphFontColor">
 				<option selected="selected" value="false">顏色</option>

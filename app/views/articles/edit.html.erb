@@ -6,20 +6,22 @@
   <%= f.label :name %><br />
   <%= f.text_field :name %>
 </div>
-
-<div id="editorPanel"></div>
-
-<hr />
-
-<!--show the content of article -->
 <%= f.label :content %><%= f.text_field :content, :style => "width: 80%; " %><!--display:none;-->
-<section id="articleContent"></section>
 
 <div class="actions">
   <%= f.submit "save article" %>
 </div>
 
 <% end %>
+
+<div id="editorPanel"></div>
+
+<hr />
+
+<!--show the content of article -->
+<section id="articleContent"></section>
+
+
 
 <script type="text/javascript">
 $(document).ready(function(){

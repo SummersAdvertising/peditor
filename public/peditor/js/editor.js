@@ -10,7 +10,7 @@ var editor = {
 
 		linkedp: true,
 		linkedimg: true,
-		paragraphFontClass: { "內文": "a-content", "標題": "a-title" }, 
+		paragraphFontClass: { "內文": "part-content", "標題": "part-title" }, 
 		paragraphFontColor: { "顏色": "default", "黑色": "#000", "藍色": "#00F" }, 
 		paragraphFontSize: { "大小": "default", 14:14, 28:28 }
 	},
@@ -119,6 +119,10 @@ var editor = {
 		}
 	},
 	ajaxupdate: function(){
+		// $.ajax({
+		// 	url: "test.html",
+		// 	data: $("form, .edit_"+ editor.settings.articleModel).serialize()
+		// });
 		$("form, .edit_"+ editor.settings.articleModel).ajaxSubmit({
 			beforeSubmit: function(a,f,o) {
 				o.dataType = 'json';
