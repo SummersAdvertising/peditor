@@ -65,9 +65,7 @@ class ArticlesController < ApplicationController
         format.json { render json: @photo, status: :created, location: @photo }
         format.js
       else
-        format.html { render action: "new" }
         format.json { render json: @photo.errors, status: :unprocessable_entity }
-        format.js
       end
     end
   end
@@ -113,8 +111,7 @@ class ArticlesController < ApplicationController
     FileUtils.rm_rf 'public/uploads/' + params[:id]
 
     respond_to do |format|
-      format.html { redirect_to articles_url }
-      format.json { head :no_content }
+      format.html { redirect_to articles_path }
     end
   end
 end
