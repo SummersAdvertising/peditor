@@ -141,7 +141,6 @@ var editor = {
 	},
 	show: function(){
 		var content = $("#"+editor.settings.articleModel+"_content").val();
-
 		var article = JSON.parse(content);
 		for(var i = 0, length = article.length; i < length; i++)
 		{
