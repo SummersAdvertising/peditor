@@ -119,15 +119,10 @@ var editor = {
 		}
 	},
 	ajaxupdate: function(){
-		// $.ajax({
-		// 	url: "test.html",
-		// 	data: $("form, .edit_"+ editor.settings.articleModel).serialize()
-		// });
-		$("form, .edit_"+ editor.settings.articleModel).ajaxSubmit({
-			beforeSubmit: function(a,f,o) {
-				o.dataType = 'json';
-			},
-			complete: function(XMLHttpRequest, textStatus) {}
+		$.ajax({
+			type: "POST",
+			url: $("form, .edit_"+ editor.settings.articleModel).attr("action"),
+			data: $("form, .edit_"+ editor.settings.articleModel).serialize()
 		});
 	},
 	pack: function(upload){

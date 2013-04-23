@@ -6,7 +6,9 @@
   <%= f.label :name %><br />
   <%= f.text_field :name %>
 </div>
-<%= f.label :content %><%= f.text_field :content, :style => "width: 80%; " %><!--display:none;-->
+<div class="field">
+	<%= f.text_field :content, :style => "width: 80%; " %><!--display:none;-->
+</div>
 
 <div class="actions">
   <%= f.submit "save article" %>
@@ -20,8 +22,6 @@
 
 <!--show the content of article -->
 <section id="articleContent"></section>
-
-
 
 <script type="text/javascript">
 $(document).ready(function(){
