@@ -98,8 +98,8 @@ editor.p = {
 		this.bindControl(paragraphBox);
 	},
 	output: function(paragraph){
-		var paragraphBox = $("<div>");
-		paragraphBox.attr("data-type", "p");
+		var paragraphBox = $("<div data-type ='p'>");
+		//paragraphBox.attr("data-type", "p");
 
 		var p = $("<p>");
 		if(paragraph.fontSize){
@@ -117,14 +117,14 @@ editor.p = {
 		  a.attr("target", "_blank").attr("href", paragraph.link);
 		  a.html(paragraph.content);
 
-		  p.append(a);
+		  $(p).append(a);
 		}
 		else{
-		  p.html(paragraph.content);
+		  $(p).html(paragraph.content);
 		}
 
-		paragraphBox.append(p);
-		editor.settings.articleSection.append(paragraphBox);
+		$(paragraphBox).append(p);
+		$(editor.settings.articleSection).append(paragraphBox);
 
 		return paragraphBox;
 	},
@@ -138,11 +138,15 @@ editor.p = {
 		editPanel.addClass("editbox");
 		var editContent = paragraphContainer.children("p:first").hide().html();
 
-		var contentLink = editContent.match(/^\<a([\S\s]+)href\=\"([\S\s]+)\"\>(.+)\<\/a\>/);
+		//var reLink = /^\<[a|A]([\S\s]+)href\=\"([\S\s]+)\"\>(.+)\<\/[a|A]\>/;
+		//var contentLink = reLink.exec(editContent.toString());
 
-		if(contentLink){
-			contentLink.aLink = contentLink[2];
-			contentLink.aContent = contentLink[3];
+		var contentLink = paragraphContainer.children("p:first").children("a:first");
+
+		if(contentLink.length > 0){
+			contentLink.aLink = contentLink.attr("href");
+			contentLink.aContent = contentLink.html();
+
 			editContent = contentLink.aContent;
 
 			var link = $("<label>");
@@ -173,7 +177,7 @@ editor.p = {
 				editPanel.remove();
 				controlPanel.show();
 
-				if(contentLink){
+				if(contentLink.length > 0){
 					paragraphContainer.children("p:first").show().children("a:first").html(editContent);
 				}
 				else{

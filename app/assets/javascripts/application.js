@@ -14,4 +14,6 @@
 //= require jquery_ujs
 //= require jquery.remotipart
 //= require jquery.ui.sortable
+//= require json2.js
+//= require html5.js
 //= require_tree .

@@ -107,8 +107,8 @@ class ArticlesController < ApplicationController
     @article.destroy
 
     #delete the photo directory
-    require 'FileUtils'
-    FileUtils.rm_rf 'public/uploads/' + params[:id]
+    require "fileutils"
+    FileUtils.rm_rf "public/uploads/" + params[:id]
 
     respond_to do |format|
       format.html { redirect_to articles_path }
