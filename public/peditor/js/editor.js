@@ -150,12 +150,7 @@ var editor = {
 	},
 	output:function(content, articleSection){
 		//read-only
-		if(articleSection){
-			editor.settings.articleSection = $(articleSection);
-		}
-		else{
-			editor.settings.articleSection = $(editor.settings.articleSection);
-		}
+		editor.settings.articleSection = $(articleSection? articleSection : editor.settings.articleSection);
 
 		var content = content? content : $("#"+editor.settings.articleModel+"_content").val();
 
@@ -227,9 +222,24 @@ var editor = {
 				'<': 'lt',
 				'>': 'gt'
 			}[all] + ";";
-		}).replace(/\n/g, '<br>');
+		});
 	},
 	HTMLparser: function(text){
-		return text.replace(/<br>/g, '\n').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+		return text.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+	},
+	br2n: function(text){
+		return text.replace(/<br>/g, '\n');
+	},
+	n2br: function(text){
+		return text.replace(/\n/g, '<br>');
+	},
+
+	filter: function(text){
+		for(var i = 1, length = arguments.length; i<length; i++){
+			text = arguments[i](text);
+		}
+		console.log(text);
+
+		return text;
 	}
 };
