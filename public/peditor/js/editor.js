@@ -135,14 +135,13 @@ var editor = {
 			article.push(upload);
 		}
 
-		$("#"+editor.settings.articleModel+"_content").val(JSON.stringify(article));
+		$("#"+editor.settings.articleModel+"_content").val(JSON.stringify(article).replace(/\\"/g,"&quot;"));
 
 		editor.save(editor.ajaxupdate);
 	},
 	show: function(){
 		var content = $("#"+editor.settings.articleModel+"_content").val();
 		var article = JSON.parse(content);
-		alert('article');
 		for(var i = 0, length = article.length; i < length; i++)
 		{
 			var paragraph = article[i];
@@ -152,7 +151,7 @@ var editor = {
 	output:function(content, articleSection){
 		//read-only
 		if(articleSection){
-			editor.settings.articleSection = articleSection;
+			editor.settings.articleSection = $(articleSection);
 		}
 		else{
 			editor.settings.articleSection = $(editor.settings.articleSection);
@@ -223,17 +222,14 @@ var editor = {
 		}
 	},
 	HTMLfilter: function(text){
-		return String(text).replace(/["<>& ]/g, function(all){
+		return String(text).replace(/[<>]/g, function(all){
 			return "&" + {
-				'"': 'quot',
 				'<': 'lt',
-				'>': 'gt',
-				'&': 'amp',
-				' ': 'nbsp'
+				'>': 'gt'
 			}[all] + ";";
-		}).replace(/\n/g, "<br>");
+		}).replace(/\n/g, '<br>');
 	},
 	HTMLparser: function(text){
-		return text.replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&').replace(/&nbsp;/g, ' ').replace(/<br[ \/]*>/g, "\n");
+		return text.replace(/<br>/g, '\n').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
 	}
 };
