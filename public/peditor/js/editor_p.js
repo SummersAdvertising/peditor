@@ -77,7 +77,7 @@ editor.p = {
 						paragraph[value] = attrEle.val() + "px";
 					break;
 					case "content":
-						paragraph[value] = editor.HTMLfilter(attrEle.val());
+						paragraph[value] = editor.filter(attrEle.val(), editor.HTMLfilter);
 					break;
 					default:
 						paragraph[value] = attrEle.val();
@@ -100,6 +100,8 @@ editor.p = {
 	output: function(paragraph){
 		var paragraphBox = $("<div data-type ='p'>");
 		//paragraphBox.attr("data-type", "p");
+
+		paragraph.content = editor.filter(paragraph.content, editor.n2br);
 
 		var p = $("<p>");
 		if(paragraph.fontSize){
@@ -155,7 +157,7 @@ editor.p = {
 
 		var textarea = $("<textarea>");
 		textarea.addClass("autogrow");
-		textarea.val(editor.HTMLparser(editContent));
+		textarea.val(editor.filter(editContent, editor.br2n, editor.HTMLparser));
 
 		var cancel = $("<a>");
 		cancel.append("取消");
@@ -172,7 +174,7 @@ editor.p = {
 		var save = $("<a>");
 		save.append("完成");
 		save.click(function(){
-			editContent = editor.HTMLfilter(textarea.val());
+			editContent = editor.filter(textarea.val(), editor.HTMLfilter, editor.n2br);
 			if(editContent){
 				editPanel.remove();
 				controlPanel.show();
@@ -247,6 +249,8 @@ editor.p = {
         else {
           paragraph.content = content.html();         
         }
+
+        paragraph.content = editor.filter(paragraph.content, editor.br2n);
 
 		return paragraph;
 	}

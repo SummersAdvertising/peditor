@@ -15,11 +15,7 @@ var editor = {
 		paragraphFontSize: { "大小": "default", 14:14, 28:28 }
 	},
 	init: function(settings){
-		if(settings){
-			editor.setEditor(settings);
-		}
-
-		editor.settings.articleSection = $(editor.settings.articleSection);
+		editor.setEditor(settings);
 
 		editor.settings.articleSection.addClass("sortable");
 		$( ".sortable" ).sortable({
@@ -48,7 +44,6 @@ var editor = {
 					element.initTab();
 				}
 			}
-			
 		}
 
 		//選單內容
@@ -72,8 +67,7 @@ var editor = {
 					else if(editorChild.length == 0){
 						editor[value].initPost();
 					}
-				}
-				
+				}	
 			});
 		}
 		else{
@@ -89,7 +83,6 @@ var editor = {
 				}
 			}
 		}
-		
 
 		if($(".button").length > 0){
 			var editorAdd = $(".button");
@@ -106,7 +99,6 @@ var editor = {
 		}
 		$("#editorPanel").append(editorAdd);
 		
-
 		editor.bindPanelControl();
 		editor.show();
 	},
@@ -135,7 +127,7 @@ var editor = {
 			article.push(upload);
 		}
 
-		$("#"+editor.settings.articleModel+"_content").val(JSON.stringify(article).replace(/\\"/g,"&quot;"));
+		$("#"+editor.settings.articleModel+"_content").val(editor.filter(JSON.stringify(article), editor.parsequot));
 
 		editor.save(editor.ajaxupdate);
 	},
@@ -176,6 +168,7 @@ var editor = {
 		});
 	},
 	setEditor: function(settings){
+		editor.settings.articleSection = $(editor.settings.articleSection);
 		for(setting in settings){
 			editor.settings[setting] = settings[setting];
 		}
@@ -209,7 +202,7 @@ var editor = {
 		});
 	},
 	alert: function(alertMsg, type){
-		if(window['Alertify']){
+		if(window["Alertify"]){
 			Alertify.log[type](alertMsg);
 		}
 		else{
@@ -217,8 +210,9 @@ var editor = {
 		}
 	},
 	HTMLfilter: function(text){
-		return String(text).replace(/[<>]/g, function(all){
+		return String(text).replace(/[&<>]/g, function(all){
 			return "&" + {
+				'&': 'amp',
 				'<': 'lt',
 				'>': 'gt'
 			}[all] + ";";
@@ -233,13 +227,14 @@ var editor = {
 	n2br: function(text){
 		return text.replace(/\n/g, '<br>');
 	},
+	parsequot: function(text){
+		return text.replace(/\\"/g,"&quot;");
+	},
 
 	filter: function(text){
 		for(var i = 1, length = arguments.length; i<length; i++){
 			text = arguments[i](text);
 		}
-		console.log(text);
-
 		return text;
 	}
 };
