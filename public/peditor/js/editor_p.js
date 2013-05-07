@@ -167,7 +167,8 @@ editor.p = {
 			paragraphContainer.children("p:first").show();
 
 			$(".controlPanel a[data-control = edit]").each(function(){
-				editor.p.bindEdit(this);
+				var type = $(this).parents(".paragraphContainer").data("type");
+				editor[type].bindEdit(this);
 			});
 		});
 
@@ -189,7 +190,8 @@ editor.p = {
 				editor.save();
 
 				$(".controlPanel a[data-control = edit]").each(function(){
-					editor.p.bindEdit(this);
+					var type = $(this).parents(".paragraphContainer").data("type");
+					editor[type].bindEdit(this);
 				});
 			}
 			else{
