@@ -45,7 +45,7 @@ editor.list = {
 			return;  
 		  }
 		  
-		  listContents.push( $(this).val() );
+		  listContents.push( editor.filter($(this).val(), editor.HTMLfilter) );
 	  });
 	  
 	  if ( !inputed ) {	  
