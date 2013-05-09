@@ -163,7 +163,7 @@ editor.p = {
 		cancel.append("取消");
 		cancel.click(function(){
 			editPanel.remove();
-			controlPanel.show();
+			controlPanel.removeAttr("style");
 			paragraphContainer.children("p:first").show();
 
 			$(".controlPanel a[data-control = edit]").each(function(){
@@ -178,7 +178,7 @@ editor.p = {
 			editContent = editor.filter(textarea.val(), editor.HTMLfilter, editor.n2br);
 			if(editContent){
 				editPanel.remove();
-				controlPanel.show();
+				controlPanel.removeAttr("style");
 
 				if(contentLink.length > 0){
 					paragraphContainer.children("p:first").show().children("a:first").html(editContent);

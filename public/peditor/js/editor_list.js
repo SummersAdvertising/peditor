@@ -109,7 +109,7 @@ editor.list = {
 		cancel.append("取消");
 		cancel.click(function(){
 			editPanel.remove();
-			controlPanel.show();
+			controlPanel.removeAttr("style");
 			paragraphContainer.children("ul").show();
 
 			$(".controlPanel a[data-control = edit]").each(function(){
@@ -121,7 +121,7 @@ editor.list = {
 		var save = $("<a>");
 		save.append("完成");
 		save.click(function(){
-			controlPanel.show();
+			controlPanel.removeAttr("style");
 			
 			var valid_modify = false;
 		    
