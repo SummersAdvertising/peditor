@@ -232,7 +232,7 @@ var editor = {
 		return text.replace(/\n/g, '<br>');
 	},
 	parsequot: function(text){
-		return text.replace(/\\"/g,"&quot;");
+		return text.replace(/\\"/g,"&quot;").replace(/'/g,"&#39;");
 	},
 
 	filter: function(text){
