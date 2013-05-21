@@ -170,6 +170,8 @@ editor.p = {
 				var type = $(this).parents(".paragraphContainer").data("type");
 				editor[type].bindEdit(this);
 			});
+
+			editor.save();
 		});
 
 		var save = $("<a>");
@@ -228,6 +230,7 @@ editor.p = {
 	},
 	bindEdit: function(edit){
 		$(edit).bind("click", function(){
+			$(".action").hide();
 			var controlPanel = $(this).parents(".controlPanel");
 			var paragraphContainer = $(this).parents(".paragraphContainer");
 			editor.p.edit(paragraphContainer, controlPanel);

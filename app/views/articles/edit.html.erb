@@ -9,11 +9,6 @@
 <div class="field">
 	<%= f.text_field :content, :style => "width: 80%; " %><!--display:none;-->
 </div>
-
-<div class="actions">
-  <%= f.submit "save article" %>
-</div>
-
 <% end %>
 
 <div id="editorPanel"></div>
@@ -23,9 +18,27 @@
 <!--show the content of article -->
 <section id="articleContent"></section>
 
+<hr />
+
+<div class="action" id="submit">
+  <a href="#">儲存</a>
+</div>
+
 <script type="text/javascript">
 $(document).ready(function(){
 	editor.init();
+
+	$("#submit").click(function(e){
+		e.preventDefault();
+
+		if(!editor.isPostNotSent()){
+			$("#edit_article_<%= @article.id %>").submit();
+		}
+		else{
+			editor.alert("段落編輯尚未完成。", "error");
+		}
+		
+	});
 });
 </script>
 

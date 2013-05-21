@@ -109,6 +109,7 @@ var editor = {
 		else{
 			editor.pack();
 		}
+		$(".action").show();
 	},
 	ajaxupdate: function(){
 		$.ajax({
@@ -232,7 +233,7 @@ var editor = {
 		return text.replace(/\n/g, '<br>');
 	},
 	parsequot: function(text){
-		return text.replace(/\\"/g,"&quot;").replace(/'/g,"&#39;");
+		return text.replace(/\\"/g,"&quot;").replace(/'/g,"&#39;").replace(/  /g, "&nbsp;&nbsp;");
 	},
 
 	filter: function(text){
@@ -240,5 +241,33 @@ var editor = {
 			text = arguments[i](text);
 		}
 		return text;
+	},
+
+	isPostNotSent: function(){
+		var result = false;
+		switch($(".post .active:first").attr("id")){
+			case "post-p":
+				result = $("#newParagraphContent").val();
+			break;
+			case "post-img":
+				result = $("input[type=file]:first").val();
+			break;
+			case "post-video":
+				result = $("#newVideoContent").val();
+			break;
+			case "post-list":
+				var hasContent = false;
+				$("#newListContent li input").each(function(){
+					if($(this).val()){
+						hasContent = true;
+						return;
+					}
+				});
+
+				result = hasContent;
+			break;
+		}
+
+		return result;
 	}
 };

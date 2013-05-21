@@ -142,6 +142,15 @@ editor.img = {
 		var controlPanel = $("<div>");
 		controlPanel.addClass("controlPanel tool-b");
 
+		if(paragraphBox.children("a").length>0){
+			var edit = $("<a>");
+			edit.append("編輯");
+			controlPanel.append(edit);
+
+			editor.img.bindEdit(edit);
+
+		}
+
 		var del = $("<a>");
 		del.attr("href", editor.img.photoDestroy+"/"+photoID);
 		del.attr("data-method", "delete");
@@ -155,5 +164,70 @@ editor.img = {
 		controlPanel.append(del);
 		paragraphBox.prepend(controlPanel);
 
+	},
+	bindEdit: function(edit){
+		$(edit).bind("click", function(){
+			var controlPanel = $(this).parents(".controlPanel");
+			var paragraphContainer = $(this).parents(".paragraphContainer");
+			editor.img.edit(paragraphContainer, controlPanel);
+		});
+	},
+	edit: function(paragraphContainer, controlPanel){
+		controlPanel.hide();
+		$(".controlPanel a[data-control = edit]").each(function(){
+			$(this).unbind();
+		});
+
+		var editPanel = $("<div>");
+		editPanel.addClass("editbox");
+
+		var imgLink = paragraphContainer.children("a:first");
+		imgLink.hide();
+
+		var textarea = $("<input type='text' size='50'>");
+		textarea.addClass("autogrow");
+		textarea.val(imgLink.attr("href"));
+
+		var cancel = $("<a>");
+		cancel.append("取消");
+		cancel.click(function(){
+			editPanel.remove();
+			controlPanel.removeAttr("style");
+			imgLink.show();
+
+			$(".controlPanel a[data-control = edit]").each(function(){
+				var type = $(this).parents(".paragraphContainer").data("type");
+				editor[type].bindEdit(this);
+			});
+		});
+
+		var save = $("<a>");
+		save.append("完成");
+		save.click(function(){
+			editContent = editor.filter(textarea.val(), editor.HTMLfilter, editor.n2br);
+			if(editContent){
+				editPanel.remove();
+				controlPanel.removeAttr("style");
+
+				imgLink.attr("href", editContent).show();
+
+
+				editor.save();
+
+				$(".controlPanel a[data-control = edit]").each(function(){
+					var type = $(this).parents(".paragraphContainer").data("type");
+					editor[type].bindEdit(this);
+				});
+			}
+			else{
+				editor.alert("請輸入修改內容", "error");
+			}
+			
+		});
+
+		var editbtnBar = $("<div>");
+		editbtnBar.addClass("tool-a").append(save).append(cancel);
+		editPanel.append(textarea).append($("<br>")).append(editbtnBar);
+		paragraphContainer.append(editPanel);
 	}
 };
