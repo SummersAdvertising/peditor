@@ -142,10 +142,12 @@ editor.img = {
 		var controlPanel = $("<div>");
 		controlPanel.addClass("controlPanel tool-b");
 
-		var edit = $("<a>");
-		edit.append("編輯").attr("data-control", "edit");
-		controlPanel.append(edit);
-		editor.img.bindEdit(edit);
+		if(editor.settings.linkedimg){
+			var edit = $("<a>");
+			edit.append("編輯").attr("data-control", "edit");
+			controlPanel.append(edit);
+			editor.img.bindEdit(edit);
+		}
 
 		var del = $("<a>");
 		del.attr("href", editor.img.photoDestroy+"/"+photoID);
