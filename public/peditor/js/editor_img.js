@@ -142,14 +142,10 @@ editor.img = {
 		var controlPanel = $("<div>");
 		controlPanel.addClass("controlPanel tool-b");
 
-		if(paragraphBox.children("a").length>0){
-			var edit = $("<a>");
-			edit.append("編輯");
-			controlPanel.append(edit);
-
-			editor.img.bindEdit(edit);
-
-		}
+		var edit = $("<a>");
+		edit.append("編輯").attr("data-control", "edit");
+		controlPanel.append(edit);
+		editor.img.bindEdit(edit);
 
 		var del = $("<a>");
 		del.attr("href", editor.img.photoDestroy+"/"+photoID);
@@ -183,18 +179,30 @@ editor.img = {
 		editPanel.addClass("editbox");
 
 		var imgLink = paragraphContainer.children("a:first");
-		imgLink.hide();
-
 		var textarea = $("<input type='text' size='50'>");
-		textarea.addClass("autogrow");
-		textarea.val(imgLink.attr("href"));
+		textarea.addClass("autogrow").attr("placeholder", "段落尚未建立連結。");
+		
+		if(imgLink.length>0){
+			imgLink.hide();
+			textarea.val(imgLink.attr("href"));
+		}
+		else{
+			imgLink = $("<a href='#'>");
+			imgLink.append(paragraphContainer.children("img:first"));
+		}
 
 		var cancel = $("<a>");
 		cancel.append("取消");
 		cancel.click(function(){
 			editPanel.remove();
 			controlPanel.removeAttr("style");
-			imgLink.show();
+			if(imgLink.attr("href").length>1){
+				imgLink.show();
+			}
+			else{
+				paragraphContainer.append(imgLink.html());
+				imgLink.remove();
+			}
 
 			$(".controlPanel a[data-control = edit]").each(function(){
 				var type = $(this).parents(".paragraphContainer").data("type");
@@ -207,24 +215,24 @@ editor.img = {
 		var save = $("<a>");
 		save.append("完成");
 		save.click(function(){
-			editContent = editor.filter(textarea.val(), editor.HTMLfilter, editor.n2br);
-			if(editContent){
-				editPanel.remove();
-				controlPanel.removeAttr("style");
-
-				imgLink.attr("href", editContent).show();
-
-
-				editor.save();
-
-				$(".controlPanel a[data-control = edit]").each(function(){
-					var type = $(this).parents(".paragraphContainer").data("type");
-					editor[type].bindEdit(this);
-				});
+			if(textarea.val()){
+				imgLink.attr("href", textarea.val()).show();
+				paragraphContainer.append(imgLink);
 			}
 			else{
-				editor.alert("請輸入修改內容", "error");
+				paragraphContainer.append(imgLink.html());
+				imgLink.remove();
 			}
+
+			editPanel.remove();
+			controlPanel.removeAttr("style");
+
+			editor.save();
+
+			$(".controlPanel a[data-control = edit]").each(function(){
+				var type = $(this).parents(".paragraphContainer").data("type");
+				editor[type].bindEdit(this);
+			});
 			
 		});
 
