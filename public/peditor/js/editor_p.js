@@ -151,9 +151,13 @@ editor.p = {
 
 			editContent = contentLink.aContent;
 
-			var link = $("<label>");
-			link.append("連結: "+contentLink.aLink);
+
 		}
+
+		var link = $("<label>");
+		link.append("連結: ");
+		var linkContent = $("<input type='text' size='50'>");
+		linkContent.attr("placeholder", "段落尚未建立連結。").val(contentLink.aLink? contentLink.aLink:"");
 
 		var textarea = $("<textarea>");
 		textarea.addClass("autogrow");
@@ -182,12 +186,15 @@ editor.p = {
 				editPanel.remove();
 				controlPanel.removeAttr("style");
 
-				if(contentLink.length > 0){
-					paragraphContainer.children("p:first").show().children("a:first").html(editContent);
+				if(linkContent.val()){
+					var pContent = "<a href="+linkContent.val() + ">" +
+									editContent + 
+									"</a>";
 				}
 				else{
-					paragraphContainer.children("p:first").show().html(editContent);
+					var pContent = editContent;
 				}
+				paragraphContainer.children("p:first").show().html(pContent);
 
 				editor.save();
 
@@ -204,7 +211,7 @@ editor.p = {
 
 		var editbtnBar = $("<div>");
 		editbtnBar.addClass("tool-a").append(save).append(cancel);
-		editPanel.append(textarea).append($("<br>")).append(contentLink? $(link).after($("<br>")) : "").append(editbtnBar);
+		editPanel.append(textarea).append($("<br>")).append(link).append(linkContent).append(editbtnBar);
 		paragraphContainer.append(editPanel);
 	},
 	bindControl: function(paragraphBox){

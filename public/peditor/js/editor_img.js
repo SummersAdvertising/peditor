@@ -167,6 +167,7 @@ editor.img = {
 	},
 	bindEdit: function(edit){
 		$(edit).bind("click", function(){
+			$(".action").hide();
 			var controlPanel = $(this).parents(".controlPanel");
 			var paragraphContainer = $(this).parents(".paragraphContainer");
 			editor.img.edit(paragraphContainer, controlPanel);
@@ -199,6 +200,8 @@ editor.img = {
 				var type = $(this).parents(".paragraphContainer").data("type");
 				editor[type].bindEdit(this);
 			});
+
+			editor.save();
 		});
 
 		var save = $("<a>");
