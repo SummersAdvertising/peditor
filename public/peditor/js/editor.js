@@ -2,6 +2,7 @@ var editor = {
 	elements: ["p", "img", "video", "list"],
 	settings: {
 		articleModel: "article",
+		articleAttr: "content",
 		photoModel: "photo",
 		photoColumn: "image",
 		photoUpload: "uploadPhoto",
@@ -129,12 +130,12 @@ var editor = {
 			article.push(upload);
 		}
 
-		$("#"+editor.settings.articleModel+"_content").val(editor.filter(JSON.stringify(article), editor.parsequot));
+		$("#"+editor.settings.articleModel+"_"+editor.settings.articleAttr).val(editor.filter(JSON.stringify(article), editor.parsequot));
 
 		editor.save(editor.ajaxupdate);
 	},
 	show: function(){
-		var content = $("#"+editor.settings.articleModel+"_content").val();
+		var content = $("#"+editor.settings.articleModel+"_"+editor.settings.articleAttr).val();
 		var article = content? JSON.parse(content):"";
 		for(var i = 0, length = article.length; i < length; i++)
 		{
@@ -146,7 +147,7 @@ var editor = {
 		//read-only
 		editor.settings.articleSection = $(articleSection? articleSection : editor.settings.articleSection);
 
-		var content = content? content : $("#"+editor.settings.articleModel+"_content").val();
+		var content = content? content : $("#"+editor.settings.articleModel+"_"+editor.settings.articleAttr).val();
 		var article = JSON.parse((content && content.length>0)? content: "{}");
 
 		for(var i = 0, length = article.length; i < length; i++)

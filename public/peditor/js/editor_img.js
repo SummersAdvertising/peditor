@@ -27,7 +27,7 @@ editor.img = {
 		var input = $("<input>");
 		input.attr("id", editor.img.fileinputID).attr("name", editor.img.fileinputName).attr("type", "file");
 
-		form.append(input).append($("<br>"));
+		form.append(input).append($("<br>")).append($("input[name='authenticity_token']").clone());
 
 		if(editor.settings.linkedimg){
 			var link = $("<input>");
