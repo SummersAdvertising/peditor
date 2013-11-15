@@ -45,7 +45,27 @@ editor.img = {
 		}
 
 		if(editor.img.validate()){
-			$("#new_" + editor.img.photoModel).submit();
+			//file upload for firefox
+			if (navigator.userAgent.indexOf("Firefox")!=-1){
+				var fileinput = $("#" + editor.img.photoModel + "_image");
+				var oMyForm = new FormData();
+				oMyForm.append(fileinput.attr("name"), fileinput.prop("files")[0]);
+				oMyForm.append("authenticity_token]", $('meta[name="csrf-token"]').attr('content'));
+
+				var oReq = new XMLHttpRequest();
+				oReq.onreadystatechange = function(){
+					if (oReq.readyState == 4)
+					{
+						eval(oReq.responseText);
+					}
+				}
+				oReq.overrideMimeType("multipart/form-data; charset=UTF-8");
+				oReq.open("POST", $("#new_" + editor.img.photoModel).attr("action") + '.js', true);
+				oReq.send(oMyForm);
+			}
+			else{
+				$("#new_" + editor.img.photoModel).submit();
+			}
 			
 		}
 		$("#"+editor.img.fileinputID).val("");

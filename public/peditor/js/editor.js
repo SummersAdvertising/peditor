@@ -1,5 +1,4 @@
 var editor = {
-	elements: ["p", "img", "video", "list"],
 	settings: {
 		articleModel: "article",
 		articleAttr: "content",
@@ -8,6 +7,7 @@ var editor = {
 		photoUpload: "uploadPhoto",
 		photoDestroy: "deletePhoto",
 		articleSection: "#articleContent",
+		elements: ["p", "img", "video", "list"],
 
 		linkedp: true,
 		linkedimg: true,
@@ -39,8 +39,8 @@ var editor = {
 			var sectionList = $("<section>").addClass("tab").append(editorList);
 			$("#editorPanel").append(sectionList);
 
-			for(var index in editor.elements){
-				var element = editor[editor.elements[index]];
+			for(var index in editor.settings.elements){
+				var element = editor[editor.settings.elements[index]];
 				if(element){
 					element.initTab();
 				}
@@ -54,7 +54,7 @@ var editor = {
 			editorContent.addClass("editorContent");
 			$("#editorPanel").append(editorContent);
 
-			$.each(editor.elements, function(index, value){
+			$.each(editor.settings.elements, function(index, value){
 				var tab = $("#tab-"+value);
 				if(tab.length > 0){
 					var editorChild =  editorContent.children("#post-"+value);
@@ -77,8 +77,8 @@ var editor = {
 			editorContent.addClass("editorContent post");
 			$("#editorPanel").append(editorContent);
 
-			for(var index in editor.elements){
-				var element = editor[editor.elements[index]];
+			for(var index in editor.settings.elements){
+				var element = editor[editor.settings.elements[index]];
 				if(element){
 					element.initPost();
 				}
@@ -160,7 +160,7 @@ var editor = {
 		$(".editorChild.active").find("*").each(function(){
 			switch(this.tagName){
 				case "SELECT":
-				$(this).val("1");
+				$(this).prop('selectedIndex',0);
 				break;
 				case "OPTION":
 				break;
@@ -183,9 +183,9 @@ var editor = {
 		var listBtns = new String();
 		var listChildren = new String();
 		
-		$.each(editor.elements, function(index, value){
-			listBtns += "#tab-" + value + (index == editor.elements.length-1? "": ", ");
-			listChildren += "#post-" + value + (index == editor.elements.length-1? "": ", ");
+		$.each(editor.settings.elements, function(index, value){
+			listBtns += "#tab-" + value + (index == editor.settings.elements.length-1? "": ", ");
+			listChildren += "#post-" + value + (index == editor.settings.elements.length-1? "": ", ");
 		});
 
 		$($(listChildren)[0]).addClass("active");
