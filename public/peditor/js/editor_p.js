@@ -163,7 +163,7 @@ editor.p = {
 
 		var textarea = $("<textarea>");
 			textarea.addClass("autogrow");
-			textarea.val(editor.filter(editContent, editor.br2n, editor.HTMLparser));
+			textarea.val(editor.filter(editContent, editor.br2n, editor.HTMLparser).replace(/&nbsp;/g, ' '));
 
 		var cancel = $("<a>");
 		cancel.append("取消");
