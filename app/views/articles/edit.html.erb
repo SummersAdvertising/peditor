@@ -3,11 +3,10 @@
 <%= form_for(@article) do |f| %>
 
 <div class="field">
-  <%= f.label :name %><br />
-  <%= f.text_field :name %>
+  <%= f.label :name, "title" %>：<%= f.text_field :name %>
 </div>
 <div class="field">
-	<%= f.text_field :content, :style => "width: 80%; " %><!--display:none;-->
+	<%= f.hidden_field :content, :style => "width: 80%; " %><!--display:none;-->
 </div>
 <% end %>
 

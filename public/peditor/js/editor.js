@@ -7,7 +7,7 @@ var editor = {
 		photoUpload: "uploadPhoto",
 		photoDestroy: "deletePhoto",
 		articleSection: "#articleContent",
-		elements: ["p", "img", "video", "list"],
+		elements: ["table", "p", "img", "video", "list"],
 
 		linkedp: true,
 		linkedimg: true,
