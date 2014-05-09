@@ -30,14 +30,14 @@ editor.table = {
 				container_new.hide();
 
 				var new_table = new Array();
+				new_table.push('<table id="editting_table">');
 
-				new_table.push('<table data-resizable-columns-id="editting_table">');
-
-				for(rows; rows > 0; rows--){
+				for(var r = rows; r > 0; r--){
 					var td = new String();
+					var child_type = (r == rows) ? "<th>&nbsp;</th>" : "<td>&nbsp;</td>";
 
 					for(var c = cols; c > 0; c--){
-						td += "<td>&nbsp;</td>";
+						td += child_type;
 					}
 
 					new_table.push("<tr>" + td +"</tr>");
@@ -47,7 +47,7 @@ editor.table = {
 
 				container_show.append('<a id="cancel_table">取消</a><br>').append(new_table.join("")).show();
 
-				$("table[data-resizable-columns-id=editting_table]").editableTableWidget();
+				$("#editting_table").resizableColumns({store: null}).editableTableWidget();
 
 				$("#cancel_table").click(function(){
 					container_show.html("").hide();
@@ -61,10 +61,17 @@ editor.table = {
 		});
 	},
 	add: function(){
+		var tableColumnWidth = new Array();
 		var tableContents = new Array();
 
-		$('table[data-resizable-columns-id=editting_table] tr').each(function() {
+		$('#editting_table tr').each(function() {
 			var trContents = new Array();
+
+			$(this).children("th").each(function(){
+				tableColumnWidth.push( this.style.width );
+				trContents.push( editor.filter($(this).html(), editor.HTMLfilter) );
+			});
+
 			$(this).children("td").each(function(){
 				trContents.push( editor.filter($(this).html(), editor.HTMLfilter) );
 			});
@@ -73,6 +80,7 @@ editor.table = {
 		});
 
 		var table = new Object();
+		table.columnWidth = tableColumnWidth;
 		table.content = tableContents;
 
 		editor.table.show(table);
@@ -99,13 +107,22 @@ editor.table = {
 
 		var tableContainer = $("<table></table>");
 		paragraphBox.append(tableContainer);
-		for ( var tr in paragraph.content ){
-		  var tdArr = paragraph.content[tr];
-		  tdArr = jQuery.map( tdArr, function( a ) {
-		  	return "<td>" + a + "</td>";
+
+		var rows = paragraph.content.length;
+		for ( var r = 0; r < rows; r++){
+		  var tdArr = paragraph.content[r];
+		  tdArr = jQuery.map( tdArr, function(val, index) {
+		  	if(r == 0){
+		  		var width = paragraph.columnWidth[index];
+		  		return "<th style='width: " + width + "%;'>" + val + "</th>";
+		  	}
+		  	else{
+		  		return "<td>" + val + "</td>";
+		  	}
 		  });
+
+		  $("<tr>" + tdArr.join("") + "</tr>").appendTo(tableContainer);
 		  
-		  $("<tr>" + tdArr.join("") + "</tr>").appendTo(tableContainer);			  
 		}
 		  
 		editor.settings.articleSection.append(paragraphBox);
@@ -122,10 +139,10 @@ editor.table = {
 		var contentBlock = paragraphContainer.children("table");
 		
 		var editPanel = $("<div>");
-		var editContainer = $("<table></table>");
+		var editContainer = $("<table id=editting_table></table>");
 		contentBlock.hide();
 
-		editContainer.html(contentBlock.html()).find("td").attr("contenteditable", true);
+		editContainer.html(contentBlock.html());
 
 		var cancel = $("<a>");
 		cancel.append("取消");
@@ -164,6 +181,8 @@ editor.table = {
 
 		editPanel.append(editContainer).append(save).append(cancel);
 		paragraphContainer.append(editPanel);
+
+		$("#editting_table").resizableColumns({store: null}).editableTableWidget();
 
 		function bindSortable(){
 			$( ".sortable" ).sortable({
@@ -206,17 +225,26 @@ editor.table = {
 		
         table.type = "table";
 
+        var tableColumnWidth = new Array();
         var tableContents = new Array();
+
         $(paragraphContainer).children("table:first").find('tr').each(function() {
         	var trContents = new Array();
+
+        	$(this).children("th").each(function(){
+				tableColumnWidth.push( this.style.width );
+				trContents.push( editor.filter($(this).html(), editor.HTMLfilter) );
+			});
+
 			$(this).children("td").each(function(){
 				trContents.push( editor.filter($(this).html(), editor.HTMLfilter) );
 			});
 
 			tableContents.push( trContents );
         });
-        
+        table.columnWidth = tableColumnWidth;
         table.content = tableContents;
+
 		return table;
 	}
 };
